@@ -408,16 +408,21 @@ window.Game = (function() {
      * Отрисовка экрана паузы.
      */
 
-    drawStatus: function(textStatus) {
-      var x = 345;
+    drawStatus: function(textStatus, width) {
+      width = 345;
+      var x = width;
       var y = 105;
+      var words = textStatus.split(' ');
+      var maxLineWidth = width;
+      var line = '';
+      var lineHeight = 26;
       this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
-      this.ctx.moveTo(355, 75);
-      this.ctx.lineTo(645, 70);
-      this.ctx.lineTo(610, 210);
-      this.ctx.lineTo(300, 210);
+      this.ctx.moveTo(width + 10, width / 5.3 + 10);
+      this.ctx.lineTo(width * 1.85 + 10, width / 5.7 + 10);
+      this.ctx.lineTo(width * 1.75 + 10, width / 1.7 + 10);
+      this.ctx.lineTo(width / 1.15 + 10, width / 1.7 + 10);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
@@ -425,10 +430,10 @@ window.Game = (function() {
       this.ctx.strokeStyle = '#ffffff';
       this.ctx.fillStyle = '#ffffff';
       this.ctx.beginPath();
-      this.ctx.moveTo(345, 65);
-      this.ctx.lineTo(635, 60);
-      this.ctx.lineTo(600, 200);
-      this.ctx.lineTo(290, 200);
+      this.ctx.moveTo(width, width / 5.3);
+      this.ctx.lineTo(width * 1.85, width / 5.7);
+      this.ctx.lineTo(width * 1.75, width / 1.7);
+      this.ctx.lineTo(width / 1.15, width / 1.7);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
@@ -436,29 +441,40 @@ window.Game = (function() {
       this.ctx.font = '16px PT Mono';
       this.ctx.fillStyle = '#000000';
 
-      for (var i = 0; i < textStatus.length; i++) {
-        this.ctx.fillText(textStatus[i], x, y);
-        y += 26;
+      for (var i = 0; i < words.length; i++) {
+        var testLine = line + words[i] + ' ';
+        var metrics = this.ctx.measureText(testLine);
+        var testWidth = metrics.width;
+        if (testWidth > maxLineWidth && i > 0) {
+          this.ctx.fillText(line, x, y);
+          line = words[i] + ' ';
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
       }
+      this.ctx.fillText(line, x, y);
+
+      console.log(words);
     },
 
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           // console.log('you have won!');
-          this.drawStatus(['Это успех!', 'Я куда-то попал.']);
+          this.drawStatus('Это успех! Я куда-то попал.');
           break;
         case Verdict.FAIL:
           // console.log('you have failed!');
-          this.drawStatus(['Что-то пошло не так', 'Я никуда не попал.']);
+          this.drawStatus('Что-то пошло не так. Я никуда не попал.');
           break;
         case Verdict.PAUSE:
           // console.log('game is on pause!');
-          this.drawStatus(['Я отдыхаю.', 'Чтобы продолжить игру', 'нажми пробел.']);
+          this.drawStatus('Я отдыхаю. Чтобы продолжить игру нажми пробел.');
           break;
         case Verdict.INTRO:
           // console.log('welcome to the game! Press Space to start');
-          this.drawStatus(['Привет! Я крутой маг.', 'Умею перемещаться и летать,', 'а ещё стрелять файрболами.']);
+          this.drawStatus('Привет! Я крутой маг. Умею перемещаться и летать, а ещё стрелять файрболами.');
           break;
       }
     },
