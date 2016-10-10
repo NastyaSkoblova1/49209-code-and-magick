@@ -409,20 +409,20 @@ window.Game = (function() {
      */
 
     drawStatus: function(textStatus, width) {
-      width = 345;
-      var x = width;
-      var y = 105;
+      var x = 300;
+      var y = 80;
       var words = textStatus.split(' ');
       var maxLineWidth = width;
-      var line = '';
+      var line = ' ';
       var lineHeight = 26;
+      var statusPadding = 10;
       this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
-      this.ctx.moveTo(width + 10, width / 5.3 + 10);
-      this.ctx.lineTo(width * 1.85 + 10, width / 5.7 + 10);
-      this.ctx.lineTo(width * 1.75 + 10, width / 1.7 + 10);
-      this.ctx.lineTo(width / 1.15 + 10, width / 1.7 + 10);
+      this.ctx.moveTo(x - statusPadding + 10, y - lineHeight + 10);
+      this.ctx.lineTo(x + width + 10, y - lineHeight + 10);
+      this.ctx.lineTo(x + width + 10, y + lineHeight * 3 + 10);
+      this.ctx.lineTo(x - statusPadding + 10, y + lineHeight * 3 + 10);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
@@ -430,10 +430,10 @@ window.Game = (function() {
       this.ctx.strokeStyle = '#ffffff';
       this.ctx.fillStyle = '#ffffff';
       this.ctx.beginPath();
-      this.ctx.moveTo(width, width / 5.3);
-      this.ctx.lineTo(width * 1.85, width / 5.7);
-      this.ctx.lineTo(width * 1.75, width / 1.7);
-      this.ctx.lineTo(width / 1.15, width / 1.7);
+      this.ctx.moveTo(x - statusPadding, y - lineHeight);
+      this.ctx.lineTo(x + width, y - lineHeight);
+      this.ctx.lineTo(x + width, y + lineHeight * 3);
+      this.ctx.lineTo(x - statusPadding, y + lineHeight * 3);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
@@ -445,6 +445,7 @@ window.Game = (function() {
         var testLine = line + words[i] + ' ';
         var metrics = this.ctx.measureText(testLine);
         var testWidth = metrics.width;
+        var lines = [];
         if (testWidth > maxLineWidth && i > 0) {
           this.ctx.fillText(line, x, y);
           line = words[i] + ' ';
@@ -454,27 +455,25 @@ window.Game = (function() {
         }
       }
       this.ctx.fillText(line, x, y);
-
-      console.log(words);
     },
 
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           // console.log('you have won!');
-          this.drawStatus('Это успех! Я куда-то попал.');
+          this.drawStatus('Это успех! Я куда-то попал.', 265);
           break;
         case Verdict.FAIL:
           // console.log('you have failed!');
-          this.drawStatus('Что-то пошло не так. Я никуда не попал.');
+          this.drawStatus('Что-то пошло не так. Я никуда не попал.', 300);
           break;
         case Verdict.PAUSE:
           // console.log('game is on pause!');
-          this.drawStatus('Я отдыхаю. Чтобы продолжить игру нажми пробел.');
+          this.drawStatus('Я отдыхаю. Чтобы продолжить игру нажми пробел.', 300);
           break;
         case Verdict.INTRO:
           // console.log('welcome to the game! Press Space to start');
-          this.drawStatus('Привет! Я крутой маг. Умею перемещаться и летать, а ещё стрелять файрболами.');
+          this.drawStatus('Привет! Я крутой маг. Умею перемещаться и летать, а ещё стрелять файрболами.', 290);
           break;
       }
     },
