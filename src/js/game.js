@@ -411,18 +411,38 @@ window.Game = (function() {
     drawStatus: function(textStatus, width) {
       var x = 300;
       var y = 80;
+      var statusYCoordinate = 80;
       var words = textStatus.split(' ');
       var maxLineWidth = width;
       var line = ' ';
       var lineHeight = 26;
-      var statusPadding = 10;
+      var statusOffset = 10;
+      var linesCount = 1;
+
+      this.ctx.font = '16px PT Mono';
+
+      for (var i = 0; i < words.length; i++) {
+        var testLine = line + words[i] + ' ';
+        var metrics = this.ctx.measureText(testLine);
+        var testWidth = metrics.width;
+        if (testWidth > maxLineWidth && i > 0) {
+          this.ctx.fillText(line, x, y);
+          line = words[i] + ' ';
+          y += lineHeight;
+          linesCount += 1;
+        } else {
+          line = testLine;
+        }
+      }
+      console.log(linesCount);
+
       this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
-      this.ctx.moveTo(x - statusPadding + 10, y - lineHeight + 10);
-      this.ctx.lineTo(x + width + 10, y - lineHeight + 10);
-      this.ctx.lineTo(x + width + 10, y + lineHeight * 3 + 10);
-      this.ctx.lineTo(x - statusPadding + 10, y + lineHeight * 3 + 10);
+      this.ctx.moveTo(x - statusOffset + statusOffset, statusYCoordinate - lineHeight + statusOffset);
+      this.ctx.lineTo(x + width + statusOffset, statusYCoordinate - lineHeight + statusOffset);
+      this.ctx.lineTo(x + width + statusOffset, statusYCoordinate + lineHeight * linesCount + statusOffset);
+      this.ctx.lineTo(x - statusOffset + statusOffset, statusYCoordinate + lineHeight * linesCount + statusOffset);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
@@ -430,30 +450,15 @@ window.Game = (function() {
       this.ctx.strokeStyle = '#ffffff';
       this.ctx.fillStyle = '#ffffff';
       this.ctx.beginPath();
-      this.ctx.moveTo(x - statusPadding, y - lineHeight);
-      this.ctx.lineTo(x + width, y - lineHeight);
-      this.ctx.lineTo(x + width, y + lineHeight * 3);
-      this.ctx.lineTo(x - statusPadding, y + lineHeight * 3);
+      this.ctx.moveTo(x - statusOffset, statusYCoordinate - lineHeight);
+      this.ctx.lineTo(x + width, statusYCoordinate - lineHeight);
+      this.ctx.lineTo(x + width, statusYCoordinate + lineHeight * linesCount);
+      this.ctx.lineTo(x - statusOffset, statusYCoordinate + lineHeight * linesCount);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
 
-      this.ctx.font = '16px PT Mono';
       this.ctx.fillStyle = '#000000';
-
-      for (var i = 0; i < words.length; i++) {
-        var testLine = line + words[i] + ' ';
-        var metrics = this.ctx.measureText(testLine);
-        var testWidth = metrics.width;
-        var lines = [];
-        if (testWidth > maxLineWidth && i > 0) {
-          this.ctx.fillText(line, x, y);
-          line = words[i] + ' ';
-          y += lineHeight;
-        } else {
-          line = testLine;
-        }
-      }
       this.ctx.fillText(line, x, y);
     },
 
@@ -461,7 +466,7 @@ window.Game = (function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           // console.log('you have won!');
-          this.drawStatus('Это успех! Я куда-то попал.', 265);
+          this.drawStatus('Это успех! Я куда-то попал.', 235);
           break;
         case Verdict.FAIL:
           // console.log('you have failed!');
