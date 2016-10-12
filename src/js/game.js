@@ -408,41 +408,45 @@ window.Game = (function() {
      * Отрисовка экрана паузы.
      */
 
-    drawStatus: function(textStatus, width) {
-      var x = 300;
-      var y = 80;
-      var statusYCoordinate = 80;
+    wrapStatusText: function(textStatus, x, y, maxLineWidth, lineHeight) {
       var words = textStatus.split(' ');
-      var maxLineWidth = width;
-      var line = ' ';
-      var lineHeight = 26;
-      var statusOffset = 10;
+      var line = '';
       var linesCount = 1;
-
       this.ctx.font = '16px PT Mono';
-
-      for (var i = 0; i < words.length; i++) {
-        var testLine = line + words[i] + ' ';
+      this.ctx.fillStyle = '#000000';
+      for (var n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
         var metrics = this.ctx.measureText(testLine);
         var testWidth = metrics.width;
-        if (testWidth > maxLineWidth && i > 0) {
+        if (testWidth > maxLineWidth && n > 0) {
           this.ctx.fillText(line, x, y);
-          line = words[i] + ' ';
+          line = words[n] + ' ';
           y += lineHeight;
           linesCount += 1;
         } else {
           line = testLine;
         }
       }
-      console.log(linesCount);
+      this.ctx.fillText(line, x, y);
+      return linesCount;
+    },
+
+    drawStatus: function(textStatus, width) {
+      var x = 300;
+      var y = 80;
+      var maxLineWidth = width;
+      var statusYCoordinate = 80;
+      var statusOffset = 10;
+      var lineHeight = 26;
+      var statusHeight = this.wrapStatusText(textStatus, x, y, maxLineWidth, lineHeight) * lineHeight;
 
       this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
       this.ctx.moveTo(x - statusOffset + statusOffset, statusYCoordinate - lineHeight + statusOffset);
       this.ctx.lineTo(x + width + statusOffset, statusYCoordinate - lineHeight + statusOffset);
-      this.ctx.lineTo(x + width + statusOffset, statusYCoordinate + lineHeight * linesCount + statusOffset);
-      this.ctx.lineTo(x - statusOffset + statusOffset, statusYCoordinate + lineHeight * linesCount + statusOffset);
+      this.ctx.lineTo(x + width + statusOffset, statusYCoordinate + statusHeight + statusOffset);
+      this.ctx.lineTo(x - statusOffset + statusOffset, statusYCoordinate + statusHeight + statusOffset);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
@@ -452,14 +456,12 @@ window.Game = (function() {
       this.ctx.beginPath();
       this.ctx.moveTo(x - statusOffset, statusYCoordinate - lineHeight);
       this.ctx.lineTo(x + width, statusYCoordinate - lineHeight);
-      this.ctx.lineTo(x + width, statusYCoordinate + lineHeight * linesCount);
-      this.ctx.lineTo(x - statusOffset, statusYCoordinate + lineHeight * linesCount);
+      this.ctx.lineTo(x + width, statusYCoordinate + statusHeight);
+      this.ctx.lineTo(x - statusOffset, statusYCoordinate + statusHeight);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
-
-      this.ctx.fillStyle = '#000000';
-      this.ctx.fillText(line, x, y);
+      this.wrapStatusText(textStatus, x, y, maxLineWidth, lineHeight);
     },
 
     _drawPauseScreen: function() {
