@@ -408,16 +408,57 @@ window.Game = (function() {
      * Отрисовка экрана паузы.
      */
 
-    drawStatus: function(textStatus) {
-      var x = 345;
-      var y = 105;
+    linesArray: [],
+
+    getLinesAmount: function(textStatus, maxLineWidth) {
+      var words = textStatus.split(' ');
+      var wordsAmount = words.length;
+      var line = '';
+      var linesCount = 1;
+
+      for (var n = 0; n < wordsAmount; n++) {
+        var testLine = line + words[n] + ' ';
+        var metrics = this.ctx.measureText(testLine);
+        var testWidth = metrics.width;
+
+        if (testWidth > maxLineWidth) {
+          this.linesArray.push(line);
+          linesCount += 1;
+          line = words[n] + ' ';
+        } else {
+          line = testLine;
+        }
+
+        if (n === wordsAmount - 1) {
+          this.linesArray.push(line);
+        }
+      }
+
+      return linesCount;
+    },
+
+    drawStatusText: function(x, y, lineHeight) {
+      this.ctx.fillStyle = '#000000';
+
+      for (var i = 0; i < this.linesArray.length; i++) {
+        this.ctx.fillText(this.linesArray[i], x, lineHeight * i + y);
+      }
+
+      this.linesArray = [];
+    },
+
+    drawStatusWindow: function(x, width, lineHeight, statusHeight) {
+      var statusYCoordinate = 80;
+      var statusOffset = 10;
+      var topYCoordinate = statusYCoordinate - lineHeight;
+      var bottomYCoordinate = statusYCoordinate + statusHeight;
       this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
-      this.ctx.moveTo(355, 75);
-      this.ctx.lineTo(645, 70);
-      this.ctx.lineTo(610, 210);
-      this.ctx.lineTo(300, 210);
+      this.ctx.moveTo(x - statusOffset + statusOffset, topYCoordinate + statusOffset);
+      this.ctx.lineTo(x + width + statusOffset, topYCoordinate + statusOffset);
+      this.ctx.lineTo(x + width + statusOffset, bottomYCoordinate + statusOffset);
+      this.ctx.lineTo(x - statusOffset + statusOffset, bottomYCoordinate + statusOffset);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
@@ -425,40 +466,44 @@ window.Game = (function() {
       this.ctx.strokeStyle = '#ffffff';
       this.ctx.fillStyle = '#ffffff';
       this.ctx.beginPath();
-      this.ctx.moveTo(345, 65);
-      this.ctx.lineTo(635, 60);
-      this.ctx.lineTo(600, 200);
-      this.ctx.lineTo(290, 200);
+      this.ctx.moveTo(x - statusOffset, topYCoordinate);
+      this.ctx.lineTo(x + width, topYCoordinate);
+      this.ctx.lineTo(x + width, bottomYCoordinate);
+      this.ctx.lineTo(x - statusOffset, bottomYCoordinate);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
+    },
 
+    drawStatus: function(textStatus, width) {
       this.ctx.font = '16px PT Mono';
-      this.ctx.fillStyle = '#000000';
-
-      for (var i = 0; i < textStatus.length; i++) {
-        this.ctx.fillText(textStatus[i], x, y);
-        y += 26;
-      }
+      
+      var x = 300;
+      var y = 80;
+      var maxLineWidth = width;
+      var lineHeight = 26;
+      var statusHeight = this.getLinesAmount(textStatus, maxLineWidth) * lineHeight;
+      this.drawStatusWindow(x, width, lineHeight, statusHeight);
+      this.drawStatusText(x, y, lineHeight);
     },
 
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           // console.log('you have won!');
-          this.drawStatus(['Это успех!', 'Я куда-то попал.']);
+          this.drawStatus('Это успех! Я куда-то попал.', 235);
           break;
         case Verdict.FAIL:
           // console.log('you have failed!');
-          this.drawStatus(['Что-то пошло не так', 'Я никуда не попал.']);
+          this.drawStatus('Что-то пошло не так. Я никуда не попал.', 300);
           break;
         case Verdict.PAUSE:
           // console.log('game is on pause!');
-          this.drawStatus(['Я отдыхаю.', 'Чтобы продолжить игру', 'нажми пробел.']);
+          this.drawStatus('Я отдыхаю. Чтобы продолжить игру нажми пробел.', 300);
           break;
         case Verdict.INTRO:
           // console.log('welcome to the game! Press Space to start');
-          this.drawStatus(['Привет! Я крутой маг.', 'Умею перемещаться и летать,', 'а ещё стрелять файрболами.']);
+          this.drawStatus('Привет! Я крутой маг. Умею перемещаться и летать, а ещё стрелять файрболами.', 290);
           break;
       }
     },
