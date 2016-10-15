@@ -408,38 +408,43 @@ window.Game = (function() {
      * Отрисовка экрана паузы.
      */
 
-    // linesArray: [], 
+    linesArray: [],
 
-    wrapStatusText: function(textStatus, x, y, maxLineWidth, lineHeight) {
+    getLinesAmount: function(textStatus, maxLineWidth) {
       var words = textStatus.split(' ');
+      var wordsAmount = words.length;
       var line = '';
       var linesCount = 1;
-      // this.ctx.font = '16px PT Mono';
-      // this.ctx.fillStyle = '#000000';
-      for (var n = 0; n < words.length; n++) {
+
+      for (var n = 0; n < wordsAmount; n++) {
         var testLine = line + words[n] + ' ';
         var metrics = this.ctx.measureText(testLine);
         var testWidth = metrics.width;
-        if (testWidth > maxLineWidth && n > 0) {
-          this.ctx.fillText(line, x, y);
-          // linesArray.push(line);
-          line = words[n] + ' ';
-          y += lineHeight;
+
+        if (testWidth > maxLineWidth) {
+          this.linesArray.push(line);
           linesCount += 1;
+          line = words[n] + ' ';
         } else {
           line = testLine;
         }
+
+        if (n === wordsAmount - 1) {
+          this.linesArray.push(line);
+        }
       }
-      // this.ctx.fillText(line, x, y);
+
       return linesCount;
     },
 
-    drawStatusText: function(textStatus, x, y, maxLineWidth, lineHeight) {
-      var line = '';
-      this.ctx.font = '16px PT Mono';
+    drawStatusText: function(x, y, lineHeight) {
       this.ctx.fillStyle = '#000000';
-      this.wrapStatusText(textStatus, x, y, maxLineWidth, lineHeight);
-      this.ctx.fillText(line, x, y);
+
+      for (var i = 0; i < this.linesArray.length; i++) {
+        this.ctx.fillText(this.linesArray[i], x, lineHeight * i + y);
+      }
+
+      this.linesArray = [];
     },
 
     drawStatusWindow: function(x, width, lineHeight, statusHeight) {
@@ -471,14 +476,15 @@ window.Game = (function() {
     },
 
     drawStatus: function(textStatus, width) {
+      this.ctx.font = '16px PT Mono';
+      
       var x = 300;
       var y = 80;
       var maxLineWidth = width;
       var lineHeight = 26;
-      var statusHeight = this.wrapStatusText(textStatus, x, y, maxLineWidth, lineHeight) * lineHeight;
+      var statusHeight = this.getLinesAmount(textStatus, maxLineWidth) * lineHeight;
       this.drawStatusWindow(x, width, lineHeight, statusHeight);
-      this.wrapStatusText(textStatus, x, y, maxLineWidth, lineHeight);
-      this.drawStatusText(textStatus, x, y, maxLineWidth, lineHeight);
+      this.drawStatusText(x, y, lineHeight);
     },
 
     _drawPauseScreen: function() {
