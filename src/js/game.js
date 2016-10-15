@@ -477,7 +477,6 @@ window.Game = (function() {
 
     drawStatus: function(textStatus, width) {
       this.ctx.font = '16px PT Mono';
-      
       var x = 300;
       var y = 80;
       var maxLineWidth = width;
