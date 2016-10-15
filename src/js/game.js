@@ -408,18 +408,21 @@ window.Game = (function() {
      * Отрисовка экрана паузы.
      */
 
+    // linesArray: [], 
+
     wrapStatusText: function(textStatus, x, y, maxLineWidth, lineHeight) {
       var words = textStatus.split(' ');
       var line = '';
       var linesCount = 1;
-      this.ctx.font = '16px PT Mono';
-      this.ctx.fillStyle = '#000000';
+      // this.ctx.font = '16px PT Mono';
+      // this.ctx.fillStyle = '#000000';
       for (var n = 0; n < words.length; n++) {
         var testLine = line + words[n] + ' ';
         var metrics = this.ctx.measureText(testLine);
         var testWidth = metrics.width;
         if (testWidth > maxLineWidth && n > 0) {
           this.ctx.fillText(line, x, y);
+          // linesArray.push(line);
           line = words[n] + ' ';
           y += lineHeight;
           linesCount += 1;
@@ -427,26 +430,30 @@ window.Game = (function() {
           line = testLine;
         }
       }
-      this.ctx.fillText(line, x, y);
+      // this.ctx.fillText(line, x, y);
       return linesCount;
     },
 
-    drawStatus: function(textStatus, width) {
-      var x = 300;
-      var y = 80;
-      var maxLineWidth = width;
+    drawStatusText: function(textStatus, x, y, maxLineWidth, lineHeight) {
+      var line = '';
+      this.ctx.font = '16px PT Mono';
+      this.ctx.fillStyle = '#000000';
+      this.wrapStatusText(textStatus, x, y, maxLineWidth, lineHeight);
+      this.ctx.fillText(line, x, y);
+    },
+
+    drawStatusWindow: function(x, width, lineHeight, statusHeight) {
       var statusYCoordinate = 80;
       var statusOffset = 10;
-      var lineHeight = 26;
-      var statusHeight = this.wrapStatusText(textStatus, x, y, maxLineWidth, lineHeight) * lineHeight;
-
+      var topYCoordinate = statusYCoordinate - lineHeight;
+      var bottomYCoordinate = statusYCoordinate + statusHeight;
       this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
-      this.ctx.moveTo(x - statusOffset + statusOffset, statusYCoordinate - lineHeight + statusOffset);
-      this.ctx.lineTo(x + width + statusOffset, statusYCoordinate - lineHeight + statusOffset);
-      this.ctx.lineTo(x + width + statusOffset, statusYCoordinate + statusHeight + statusOffset);
-      this.ctx.lineTo(x - statusOffset + statusOffset, statusYCoordinate + statusHeight + statusOffset);
+      this.ctx.moveTo(x - statusOffset + statusOffset, topYCoordinate + statusOffset);
+      this.ctx.lineTo(x + width + statusOffset, topYCoordinate + statusOffset);
+      this.ctx.lineTo(x + width + statusOffset, bottomYCoordinate + statusOffset);
+      this.ctx.lineTo(x - statusOffset + statusOffset, bottomYCoordinate + statusOffset);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
@@ -454,14 +461,24 @@ window.Game = (function() {
       this.ctx.strokeStyle = '#ffffff';
       this.ctx.fillStyle = '#ffffff';
       this.ctx.beginPath();
-      this.ctx.moveTo(x - statusOffset, statusYCoordinate - lineHeight);
-      this.ctx.lineTo(x + width, statusYCoordinate - lineHeight);
-      this.ctx.lineTo(x + width, statusYCoordinate + statusHeight);
-      this.ctx.lineTo(x - statusOffset, statusYCoordinate + statusHeight);
+      this.ctx.moveTo(x - statusOffset, topYCoordinate);
+      this.ctx.lineTo(x + width, topYCoordinate);
+      this.ctx.lineTo(x + width, bottomYCoordinate);
+      this.ctx.lineTo(x - statusOffset, bottomYCoordinate);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.fill();
+    },
+
+    drawStatus: function(textStatus, width) {
+      var x = 300;
+      var y = 80;
+      var maxLineWidth = width;
+      var lineHeight = 26;
+      var statusHeight = this.wrapStatusText(textStatus, x, y, maxLineWidth, lineHeight) * lineHeight;
+      this.drawStatusWindow(x, width, lineHeight, statusHeight);
       this.wrapStatusText(textStatus, x, y, maxLineWidth, lineHeight);
+      this.drawStatusText(textStatus, x, y, maxLineWidth, lineHeight);
     },
 
     _drawPauseScreen: function() {
