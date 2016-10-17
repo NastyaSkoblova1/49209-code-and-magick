@@ -11,17 +11,9 @@ window.form = (function() {
   var nameHint = document.querySelector('.review-fields-name');
   var textHint = document.querySelector('.review-fields-text');
   var submitButton = document.querySelector('.review-submit');
+  var reviewMarks = document.querySelector('.review-form')['review-mark'];
   var nameTextValue;
   var reviewTextValue;
-  var getRateValue = function() {
-    var rateValue;
-    for (var i = 0; i < rate.length; i++) {
-      if (rate[i].checked) {
-        rateValue = rate[i].getAttribute('value');
-      }
-    }
-    return rateValue;
-  };
   var getTextValue = function() {
     nameTextValue = nameText.value.trim();
     reviewTextValue = reviewText.value.trim();
@@ -43,7 +35,7 @@ window.form = (function() {
   var validateForm = function() {
     getTextValue();
     submitButton.disabled = true;
-    if (getRateValue() < MIN_GOOD_RATE) {
+    if (reviewMarks.value < MIN_GOOD_RATE) {
       reviewText.required = true;
       if (nameTextValue !== '' && reviewTextValue !== '') {
         submitButton.disabled = false;
@@ -53,6 +45,7 @@ window.form = (function() {
         submitButton.disabled = false;
       }
     }
+    console.log(reviewMarks.value);
     hideHints();
   };
   for (var i = 0; i < rate.length; i++) {
