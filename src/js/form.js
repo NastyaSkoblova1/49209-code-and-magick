@@ -11,10 +11,8 @@ window.form = (function() {
   var nameHint = document.querySelector('.review-fields-name');
   var textHint = document.querySelector('.review-fields-text');
   var submitButton = document.querySelector('.review-submit');
-  var nameRegExp = /^[A-Z]/;
-  var reviewRegExp = /\S/;
-  var testName;
-  var testReview;
+  var nameTextValue;
+  var reviewTextValue;
   var getRateValue = function() {
     var rateValue;
     for (var i = 0; i < rate.length; i++) {
@@ -24,14 +22,17 @@ window.form = (function() {
     }
     return rateValue;
   };
+  var getTextValue = function() {
+    nameTextValue = nameText.value.trim();
+    reviewTextValue = reviewText.value.trim();
+  };
   var hideHints = function() {
-    testName = nameRegExp.test(nameText.value);
-    testReview = reviewRegExp.test(reviewText.value);
-    if (nameText.value !== '' && reviewText.value !== '' && testName && testReview) {
+    getTextValue();
+    if (nameTextValue !== '' && reviewTextValue !== '') {
       hintControls.style.display = 'none';
-    } else if (nameText.value !== '' && testName) {
+    } else if (nameTextValue !== '' ) {
       nameHint.style.display = 'none';
-    } else if (reviewText.value !== '' && testReview) {
+    } else if (reviewTextValue !== '') {
       textHint.style.display = 'none';
     } else {
       hintControls.style.display = 'inline-block';
@@ -40,16 +41,15 @@ window.form = (function() {
     }
   };
   var validateForm = function() {
-    testName = nameRegExp.test(nameText.value);
-    testReview = reviewRegExp.test(reviewText.value);
+    getTextValue();
     submitButton.disabled = true;
     if (getRateValue() < MIN_GOOD_RATE) {
       reviewText.required = true;
-      if (nameText.value !== '' && reviewText.value !== '' && testName && testReview) {
+      if (nameTextValue !== '' && reviewTextValue !== '') {
         submitButton.disabled = false;
       }
     } else {
-      if (nameText.value !== '' && testName) {
+      if (nameTextValue !== '') {
         submitButton.disabled = false;
       }
     }
