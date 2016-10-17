@@ -18,35 +18,29 @@ window.form = (function() {
     nameTextValue = nameText.value.trim();
     reviewTextValue = reviewText.value.trim();
   };
-  var hideHints = function() {
-    getTextValue();
-    if (nameTextValue !== '' && reviewTextValue !== '') {
-      hintControls.style.display = 'none';
-    } else if (nameTextValue !== '' ) {
-      nameHint.style.display = 'none';
-    } else if (reviewTextValue !== '') {
-      textHint.style.display = 'none';
+  var toggleHints = function() {
+    if (nameTextValue.length > 0 && reviewTextValue.length > 0) {
+      hintControls.classList.add('invisible');
+    } else if (nameTextValue.length > 0) {
+      nameHint.classList.add('invisible');
+    } else if (reviewTextValue.length > 0) {
+      textHint.classList.add('invisible');
     } else {
-      hintControls.style.display = 'inline-block';
-      nameHint.style.display = 'inline-block';
-      textHint.style.display = 'inline-block';
+      hintControls.classList.remove('invisible');
+      nameHint.classList.remove('invisible');
+      textHint.classList.remove('invisible');
     }
   };
   var validateForm = function() {
     getTextValue();
-    submitButton.disabled = true;
     if (reviewMarks.value < MIN_GOOD_RATE) {
       reviewText.required = true;
-      if (nameTextValue !== '' && reviewTextValue !== '') {
-        submitButton.disabled = false;
-      }
+      submitButton.disabled = !(nameTextValue.length > 0);
+      submitButton.disabled = !(reviewTextValue.length > 0);
     } else {
-      if (nameTextValue !== '') {
-        submitButton.disabled = false;
-      }
+      submitButton.disabled = !(nameTextValue.length > 0);
     }
-    console.log(reviewMarks.value);
-    hideHints();
+    toggleHints();
   };
   for (var i = 0; i < rate.length; i++) {
     rate[i].onchange = function() {
