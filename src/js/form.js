@@ -19,17 +19,9 @@ window.form = (function() {
     reviewTextValue = reviewText.value.trim();
   };
   var toggleHints = function() {
-    if (nameTextValue.length > 0 && reviewTextValue.length > 0) {
-      hintControls.classList.add('invisible');
-    } else if (nameTextValue.length > 0) {
-      nameHint.classList.add('invisible');
-    } else if (reviewTextValue.length > 0) {
-      textHint.classList.add('invisible');
-    } else {
-      hintControls.classList.remove('invisible');
-      nameHint.classList.remove('invisible');
-      textHint.classList.remove('invisible');
-    }
+    nameHint.classList.toggle('invisible', nameTextValue.length > 0);
+    textHint.classList.toggle('invisible', reviewTextValue.length > 0 || reviewMarks.value >= MIN_GOOD_RATE);
+    hintControls.classList.toggle('invisible', nameTextValue.length > 0 && reviewMarks.value >= MIN_GOOD_RATE || nameTextValue.length > 0 && reviewTextValue.length > 0);
   };
   var validateForm = function() {
     getTextValue();
@@ -76,10 +68,6 @@ window.form = (function() {
   formCloseButton.onclick = function(evt) {
     evt.preventDefault();
     form.close();
-  };
-
-  textHint.onclick = function() {
-    validateForm();
   };
 
   return form;
