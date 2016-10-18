@@ -14,25 +14,34 @@ window.form = (function() {
   var reviewMarks = document.querySelector('.review-form')['review-mark'];
   var nameTextValue;
   var reviewTextValue;
+  var nameHintValidate;
+  var reviewTextValidate;
   var getTextValue = function() {
     nameTextValue = nameText.value.trim();
     reviewTextValue = reviewText.value.trim();
   };
   var toggleHints = function() {
-    nameHint.classList.toggle('invisible', nameTextValue.length > 0);
-    textHint.classList.toggle('invisible', reviewTextValue.length > 0 || reviewMarks.value >= MIN_GOOD_RATE);
-    hintControls.classList.toggle('invisible', nameTextValue.length > 0 && reviewMarks.value >= MIN_GOOD_RATE || nameTextValue.length > 0 && reviewTextValue.length > 0);
+    nameHintValidate = nameTextValue.length > 0;
+    reviewTextValidate = reviewTextValue.length > 0 || reviewMarks.value >= MIN_GOOD_RATE;
+    nameHint.classList.toggle('invisible', nameHintValidate);
+    textHint.classList.toggle('invisible', reviewTextValidate);
+    hintControls.classList.toggle('invisible', nameHintValidate && reviewTextValidate);
   };
   var validateForm = function() {
     getTextValue();
+    // if (reviewMarks.value < MIN_GOOD_RATE) {
+    //   reviewText.required = true;
+    //   submitButton.disabled = !(reviewTextValue === '' && nameTextValue === '');
+    // } else {
+    //   submitButton.disabled = nameTextValue.length <= 0;
+    // }
+    toggleHints();
     if (reviewMarks.value < MIN_GOOD_RATE) {
       reviewText.required = true;
-      submitButton.disabled = !(nameTextValue.length > 0);
-      submitButton.disabled = !(reviewTextValue.length > 0);
+      submitButton.disabled = !(nameHintValidate && reviewTextValidate);
     } else {
-      submitButton.disabled = !(nameTextValue.length > 0);
+      submitButton.disabled = !nameHintValidate;
     }
-    toggleHints();
   };
   for (var i = 0; i < rate.length; i++) {
     rate[i].onchange = function() {
