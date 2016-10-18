@@ -16,32 +16,18 @@ window.form = (function() {
   var reviewTextValue;
   var nameHintValidate;
   var reviewTextValidate;
-  var getTextValue = function() {
+  var validateForm = function() {
     nameTextValue = nameText.value.trim();
     reviewTextValue = reviewText.value.trim();
-  };
-  var toggleHints = function() {
     nameHintValidate = nameTextValue.length > 0;
     reviewTextValidate = reviewTextValue.length > 0 || reviewMarks.value >= MIN_GOOD_RATE;
     nameHint.classList.toggle('invisible', nameHintValidate);
     textHint.classList.toggle('invisible', reviewTextValidate);
     hintControls.classList.toggle('invisible', nameHintValidate && reviewTextValidate);
-  };
-  var validateForm = function() {
-    getTextValue();
-    // if (reviewMarks.value < MIN_GOOD_RATE) {
-    //   reviewText.required = true;
-    //   submitButton.disabled = !(reviewTextValue === '' && nameTextValue === '');
-    // } else {
-    //   submitButton.disabled = nameTextValue.length <= 0;
-    // }
-    toggleHints();
     if (reviewMarks.value < MIN_GOOD_RATE) {
       reviewText.required = true;
-      submitButton.disabled = !(nameHintValidate && reviewTextValidate);
-    } else {
-      submitButton.disabled = !nameHintValidate;
     }
+    submitButton.disabled = !(nameHintValidate && reviewTextValidate);
   };
   for (var i = 0; i < rate.length; i++) {
     rate[i].onchange = function() {
