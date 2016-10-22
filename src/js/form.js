@@ -34,7 +34,9 @@ window.form = (function() {
     var cookieReviewMark = window.Cookies.get('review-mark');
     var cookieReviewName = window.Cookies.get('review-name');
     reviewMarks.value = cookieReviewMark;
-    reviewMarks[reviewMarks.length - cookieReviewMark].setAttribute('checked', '');
+    if (cookieReviewName) {
+      reviewMarks[reviewMarks.length - cookieReviewMark].checked = true;
+    }
     if (cookieReviewName) {
       nameText.value = cookieReviewName;
     } else {
@@ -49,9 +51,6 @@ window.form = (function() {
     nameHint.classList.toggle('invisible', nameHintValidate);
     textHint.classList.toggle('invisible', reviewTextValidate);
     hintControls.classList.toggle('invisible', nameHintValidate && reviewTextValidate);
-    // if (reviewMarks.value < MIN_GOOD_RATE) {
-    //   reviewText.required = true;
-    // }
     reviewText.required = reviewMarks.value < MIN_GOOD_RATE;
     submitButton.disabled = !(nameHintValidate && reviewTextValidate);
 
