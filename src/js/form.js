@@ -34,10 +34,11 @@ window.form = (function() {
     var cookieReviewMark = window.Cookies.get('review-mark');
     var cookieReviewName = window.Cookies.get('review-name');
     reviewMarks.value = cookieReviewMark;
-    if (typeof cookieReviewName === 'undefined') {
-      nameText.value = '';
-    } else {
+    reviewMarks[reviewMarks.length - cookieReviewMark].setAttribute('checked', '');
+    if (cookieReviewName) {
       nameText.value = cookieReviewName;
+    } else {
+      nameText.value = '';
     }
   };
   var validateForm = function() {
