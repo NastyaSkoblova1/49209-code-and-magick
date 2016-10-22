@@ -4,6 +4,7 @@ window.form = (function() {
   var formContainer = document.querySelector('.overlay-container');
   var formCloseButton = document.querySelector('.review-form-close');
   var MIN_GOOD_RATE = 3;
+  var formBlock = document.querySelector('.review-form');
   var rate = document.querySelectorAll('.review-form-group-mark input[type="radio"]');
   var nameText = document.querySelector('#review-name');
   var reviewText = document.querySelector('#review-text');
@@ -21,7 +22,7 @@ window.form = (function() {
       dayGraceHopper.setFullYear(currentDate.getFullYear() - 1);
     }
 
-    dayCount = currentDate - dayGraceHopper;
+    dayCount = Math.ceil((currentDate - dayGraceHopper) / (1000 * 3600 * 24));
     return dayCount;
   };
   var setCookies = function() {
@@ -30,8 +31,14 @@ window.form = (function() {
     window.Cookies.set('review-name', nameText.value, {expires: cookiesExpires});
   };
   var getCookies = function() {
-    reviewMarks.value = window.Cookies.get('review-mark');
-    nameText.value = window.Cookies.get('review-name');
+    var cookieReviewMark = window.Cookies.get('review-mark');
+    var cookieReviewName = window.Cookies.get('review-name');
+    reviewMarks.value = cookieReviewMark;
+    if (typeof cookieReviewName === 'undefined') {
+      nameText.value = '';
+    } else {
+      nameText.value = cookieReviewName;
+    }
   };
   var validateForm = function() {
     var nameTextValue = nameText.value.trim();
@@ -45,6 +52,8 @@ window.form = (function() {
       reviewText.required = true;
     }
     submitButton.disabled = !(nameHintValidate && reviewTextValidate);
+
+    setCookies();
   };
 
   for (var i = 0; i < rate.length; i++) {
@@ -52,17 +61,18 @@ window.form = (function() {
       validateForm();
     };
   }
+
   nameText.oninput = function() {
     validateForm();
   };
   reviewText.oninput = function() {
     validateForm();
   };
-  submitButton.onclick = function() {
-    setCookies();
+  formBlock.onsubmit = function() {
+    validateForm();
   };
-  validateForm();
   getCookies();
+  validateForm();
 
   var form = {
     onClose: null,
