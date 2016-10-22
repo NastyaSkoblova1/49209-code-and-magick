@@ -49,9 +49,10 @@ window.form = (function() {
     nameHint.classList.toggle('invisible', nameHintValidate);
     textHint.classList.toggle('invisible', reviewTextValidate);
     hintControls.classList.toggle('invisible', nameHintValidate && reviewTextValidate);
-    if (reviewMarks.value < MIN_GOOD_RATE) {
-      reviewText.required = true;
-    }
+    // if (reviewMarks.value < MIN_GOOD_RATE) {
+    //   reviewText.required = true;
+    // }
+    reviewText.required = reviewMarks.value < MIN_GOOD_RATE;
     submitButton.disabled = !(nameHintValidate && reviewTextValidate);
 
     setCookies();
