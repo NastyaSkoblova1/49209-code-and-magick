@@ -4,7 +4,6 @@ window.form = (function() {
   var formContainer = document.querySelector('.overlay-container');
   var formCloseButton = document.querySelector('.review-form-close');
   var MIN_GOOD_RATE = 3;
-  var formBlock = document.querySelector('.review-form');
   var rate = document.querySelectorAll('.review-form-group-mark input[type="radio"]');
   var nameText = document.querySelector('#review-name');
   var reviewText = document.querySelector('#review-text');
@@ -13,32 +12,27 @@ window.form = (function() {
   var textHint = document.querySelector('.review-fields-text');
   var submitButton = document.querySelector('.review-submit');
   var reviewMarks = document.querySelector('.review-form')['review-mark'];
-  var nameCookie;
-
   var setCookiesExpires = function() {
-     var currentDate = new Date();
-     var dayGraceHopper = new Date(currentDate.getFullYear(), 11, 9);
-     var dayCount;
+    var currentDate = new Date();
+    var dayGraceHopper = new Date(currentDate.getFullYear(), 11, 9);
+    var dayCount;
 
-     if (dayGraceHopper > currentDate) {
-        dayGraceHopper.setFullYear(currentDate.getFullYear() - 1);
-     }
+    if (dayGraceHopper > currentDate) {
+      dayGraceHopper.setFullYear(currentDate.getFullYear() - 1);
+    }
 
-     dayCount = currentDate - dayGraceHopper;
-     return dayCount;
+    dayCount = currentDate - dayGraceHopper;
+    return dayCount;
   };
-
   var setCookies = function() {
-     var cookiesExpires = setCookiesExpires();
-     Cookies.set('review-mark', reviewMarks.value, {expires: cookiesExpires});
-     Cookies.set('review-name', nameText.value, {expires: cookiesExpires});
+    var cookiesExpires = setCookiesExpires();
+    window.Cookies.set('review-mark', reviewMarks.value, {expires: cookiesExpires});
+    window.Cookies.set('review-name', nameText.value, {expires: cookiesExpires});
   };
-
   var getCookies = function() {
-    reviewMarks.value = Cookies.get('review-mark');
-    nameText.value = Cookies.get('review-name');
+    reviewMarks.value = window.Cookies.get('review-mark');
+    nameText.value = window.Cookies.get('review-name');
   };
-
   var validateForm = function() {
     var nameTextValue = nameText.value.trim();
     var reviewTextValue = reviewText.value.trim();
@@ -64,12 +58,11 @@ window.form = (function() {
   reviewText.oninput = function() {
     validateForm();
   };
-  validateForm();
-  getCookies();
-
   submitButton.onclick = function() {
     setCookies();
   };
+  validateForm();
+  getCookies();
 
   var form = {
     onClose: null,
