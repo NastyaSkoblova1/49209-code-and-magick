@@ -34,11 +34,9 @@ window.form = (function() {
     var cookieReviewMark = window.Cookies.get('review-mark');
     var cookieReviewName = window.Cookies.get('review-name');
     reviewMarks.value = cookieReviewMark;
-    if (cookieReviewMark) {
-      reviewMarks[reviewMarks.length - cookieReviewMark].checked = true;
-    }
     if (cookieReviewName) {
       nameText.value = cookieReviewName;
+      reviewMarks[reviewMarks.length - cookieReviewMark].checked = true;
     } else {
       nameText.value = '';
     }
