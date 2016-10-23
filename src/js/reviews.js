@@ -146,17 +146,17 @@
   var templateContainer = 'content' in template ? template.content : template;
   var templateContainerReview = templateContainer.querySelector('.review');
   reviewsFilter.classList.add('invisible');
-  var getReviewElement = function(reviewsArr) {
+  var getReviewElement = function(reviewItem) {
     var reviewElement = templateContainerReview.cloneNode(true);
     var reviewAuthor = reviewElement.querySelector('.review-author');
     var reviewRating = reviewElement.querySelector('.review-rating');
     var reviewText = reviewElement.querySelector('.review-text');
-    reviewRating.classList.add('review-rating-' + valueRatingClass[reviewsArr.rating - 1]);
-    reviewText.textContent = reviewsArr.description;
+    reviewRating.classList.add('review-rating-' + valueRatingClass[reviewItem.rating - 1]);
+    reviewText.textContent = reviewItem.description;
     var authorImage = new Image();
     authorImage.onload = function() {
-      reviewAuthor.alt = reviewsArr.author.name;
-      reviewAuthor.src = reviewsArr.author.picture;
+      reviewAuthor.alt = reviewItem.author.name;
+      reviewAuthor.src = reviewItem.author.picture;
       reviewAuthor.width = 124;
       reviewAuthor.height = 124;
     };
@@ -165,7 +165,7 @@
       reviewElement.classList.add('review-load-failure');
     };
 
-    authorImage.src = reviewsArr.author.picture;
+    authorImage.src = reviewItem.author.picture;
 
     return reviewElement;
   };
