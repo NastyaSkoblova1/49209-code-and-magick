@@ -49,12 +49,12 @@
     document.body.appendChild(script);
   };
 
-  var showReviews = function(reviewItem) {
+  var showReviews = function() {
     reviews.forEach(function(review) {
       reviewList.appendChild(getReviewElement(review));
     });
-  }
+  };
 
-  loadReviews(REVIEWS_LOAD_URL, showReviews);
+  loadReviews(REVIEWS_LOAD_URL, showReviews, '__jsonpCallback');
   reviewsFilter.classList.remove('invisible');
 })();
