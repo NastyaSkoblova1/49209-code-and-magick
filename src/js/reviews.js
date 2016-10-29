@@ -1,60 +1,22 @@
 'use strict';
 
-(function() {
-  var reviewsFilter = document.querySelector('.reviews-filter');
-  var template = document.querySelector('template');
+var loadReview = require('./load.js');
+var getReviewElement = require('./review.js');
+var REVIEWS_LOAD_URL = 'http://localhost:1507/api/reviews';
+var reviewsFilter = document.querySelector('.reviews-filter');
+
+reviewsFilter.classList.add('invisible');
+
+var showReviews = function(reviewsItems) {
   var reviewList = document.querySelector('.reviews-list');
-  var valueRatingClass = ['one', 'two', 'three', 'four', 'five'];
-  var templateContainer = 'content' in template ? template.content : template;
-  var templateContainerReview = templateContainer.querySelector('.review');
-  var REVIEWS_LOAD_URL = 'http://localhost:1507/api/reviews';
-  var reviews = [];
-
-  reviewsFilter.classList.add('invisible');
-
-  var getReviewElement = function(reviewItem) {
-    var reviewElement = templateContainerReview.cloneNode(true);
-    var reviewAuthor = reviewElement.querySelector('.review-author');
-    var reviewRating = reviewElement.querySelector('.review-rating');
-    var reviewText = reviewElement.querySelector('.review-text');
-    reviewRating.classList.add('review-rating-' + valueRatingClass[reviewItem.rating - 1]);
-    reviewText.textContent = reviewItem.description;
-    var authorImage = new Image();
-    authorImage.onload = function() {
-      reviewAuthor.alt = reviewItem.author.name;
-      reviewAuthor.src = reviewItem.author.picture;
-      reviewAuthor.width = 124;
-      reviewAuthor.height = 124;
-    };
-    authorImage.onerror = function() {
-      reviewElement.classList.add('review-load-failure');
-    };
-
-    authorImage.src = reviewItem.author.picture;
-
-    return reviewElement;
-  };
-
-  var loadReviews = function(url, callback, callbackName) {
-    if (!callbackName) {
-      callbackName = 'cb' + Date.now();
-    }
-    window[callbackName] = function(data) {
-      reviews = data;
-      callback(data);
-    };
-
-    var script = document.createElement('script');
-    script.src = url + '?callback=' + callbackName;
-    document.body.appendChild(script);
-  };
-
-  var showReviews = function() {
-    reviews.forEach(function(review) {
-      reviewList.appendChild(getReviewElement(review));
-    });
-  };
-
-  loadReviews(REVIEWS_LOAD_URL, showReviews, '__jsonpCallback');
+  reviewsItems.forEach(function(review) {
+    reviewList.appendChild(getReviewElement(review));
+  });
   reviewsFilter.classList.remove('invisible');
-})();
+};
+
+var reviews = function() {
+  loadReview(REVIEWS_LOAD_URL, showReviews, '__jsonpCallback');
+};
+
+module.exports = reviews;
