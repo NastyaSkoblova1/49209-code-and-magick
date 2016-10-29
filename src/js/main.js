@@ -24,4 +24,4 @@ form.onClose = function() {
   game.setDeactivated(false);
 };
 
-reviews.loadReview();
+reviews();
