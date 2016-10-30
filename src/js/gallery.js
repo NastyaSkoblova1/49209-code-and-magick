@@ -6,6 +6,7 @@ var overlayGalleryControlRight = document.querySelector('.overlay-gallery-contro
 var previewNumberCurrent = document.querySelector('.preview-number-current');
 var previewNumberTotal = document.querySelector('.preview-number-total');
 var overlayGalleryClose = document.querySelector('.overlay-gallery-close');
+var overlayGalleryPreview = document.querySelector('.overlay-gallery-preview');
 var activePicture = 0;
 
 var Gallery = function(pictures) {
@@ -16,6 +17,7 @@ var Gallery = function(pictures) {
   this.overlayGalleryControlRight = overlayGalleryControlRight;
   this.previewNumberCurrent = previewNumberCurrent;
   this.previewNumberTotal = previewNumberTotal;
+  this.overlayGalleryPreview = overlayGalleryPreview;
   this.overlayGalleryClose = overlayGalleryClose;
 };
 
@@ -48,7 +50,7 @@ Gallery.prototype.setActivePicture = function(activePicture) {
   this.activePicture = activePicture;
   var picture = new Image();
   picture.src = this.pictures[activePicture];
-  this.overlayGalleryPreview.removeChild(this.overlayGalleryPreview.childNodes);
+  // this.overlayGalleryPreview.removeChild(this.overlayGalleryPreview.childNodes);
   this.overlayGalleryPreview.appendChild(picture);
 };
 
