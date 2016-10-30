@@ -3,10 +3,21 @@
 var Game = require('./game.js');
 var form = require('./form.js');
 var reviews = require('./reviews.js');
+var Gallery = require('./gallery.js');
 
 var game = new Game(document.querySelector('.demo'));
 game.initializeLevelAndStart();
 game.setGameStatus(Game.Verdict.INTRO);
+
+var pictures = [];
+var galleryImages = document.querySelectorAll('.photogallery-image');
+var gallery = new Gallery(pictures);
+
+galleryImages.forEach(function(picture, activePicture) {
+  picture.onclick = function() {
+    gallery.show(activePicture);
+  };
+});
 
 var formOpenButton = document.querySelector('.reviews-controls-new');
 
