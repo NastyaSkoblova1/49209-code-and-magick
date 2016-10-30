@@ -50,8 +50,11 @@ Gallery.prototype.setActivePicture = function(activePicture) {
   this.activePicture = activePicture;
   var picture = new Image();
   picture.src = this.pictures[activePicture];
-  // this.overlayGalleryPreview.removeChild(this.overlayGalleryPreview.childNodes);
-  this.overlayGalleryPreview.appendChild(picture);
+  if (overlayGalleryPreview.lastChild === 'img') {
+    this.overlayGalleryPreview.replaceChild(picture, this.overlayGalleryPreview);
+  } else {
+    this.overlayGalleryPreview.appendChild(picture);
+  }
 };
 
 Gallery.prototype.onGalleryCloseClick = function() {
@@ -66,7 +69,7 @@ Gallery.prototype.onControlLeftClick = function() {
 };
 
 Gallery.prototype.onControlRightClick = function() {
-  if (activePicture < this.pictures.length) {
+  if (activePicture < this.pictures.length - 1) {
     activePicture = activePicture + 1;
     this.setActivePicture(activePicture);
   }
