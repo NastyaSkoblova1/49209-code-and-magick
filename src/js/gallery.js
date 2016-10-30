@@ -1,27 +1,20 @@
 'use strict';
 
-var overlayGallery = document.querySelector('.overlay-gallery');
-var overlayGalleryControlLeft = document.querySelector('.overlay-gallery-control-left');
-var overlayGalleryControlRight = document.querySelector('.overlay-gallery-control-right');
-var previewNumberCurrent = document.querySelector('.preview-number-current');
-var previewNumberTotal = document.querySelector('.preview-number-total');
-var overlayGalleryClose = document.querySelector('.overlay-gallery-close');
-var overlayGalleryPreview = document.querySelector('.overlay-gallery-preview');
 var activePicture = 0;
 
-var Gallery = function(pictures) {
-  this.pictures = pictures;
+var Gallery = function(picturesItems) {
+  this.pictures = picturesItems;
   this.activePicture = activePicture;
-  this.overlayGallery = overlayGallery;
-  this.overlayGalleryControlLeft = overlayGalleryControlLeft;
-  this.overlayGalleryControlRight = overlayGalleryControlRight;
-  this.previewNumberCurrent = previewNumberCurrent;
-  this.previewNumberTotal = previewNumberTotal;
-  this.overlayGalleryPreview = overlayGalleryPreview;
-  this.overlayGalleryClose = overlayGalleryClose;
+  this.overlayGallery = document.querySelector('.overlay-gallery');
+  this.overlayGalleryControlLeft = document.querySelector('.overlay-gallery-control-left');
+  this.overlayGalleryControlRight = document.querySelector('.overlay-gallery-control-right');
+  this.previewNumberCurrent = document.querySelector('.preview-number-current');
+  this.previewNumberTotal = document.querySelector('.preview-number-total');
+  this.overlayGalleryClose = document.querySelector('.overlay-gallery-close');
+  this.overlayGalleryPreview = document.querySelector('.overlay-gallery-preview');
 };
 
-Gallery.prototype.show = function(activePicture) {
+Gallery.prototype.show = function(currentPicture) {
   var self = this;
   this.overlayGalleryClose.onclick = function(evt) {
     evt.preventDefault();
@@ -36,7 +29,7 @@ Gallery.prototype.show = function(activePicture) {
     self.onControlRightClick();
   };
   this.overlayGallery.classList.remove('invisible');
-  this.setActivePicture(activePicture);
+  this.setActivePicture(currentPicture);
 };
 
 Gallery.prototype.hide = function() {
@@ -46,15 +39,18 @@ Gallery.prototype.hide = function() {
   this.overlayGalleryControlRight.onclick = null;
 };
 
-Gallery.prototype.setActivePicture = function(activePicture) {
-  this.activePicture = activePicture;
+Gallery.prototype.setActivePicture = function(currentPicture) {
+  this.activePicture = currentPicture;
   var picture = new Image();
-  picture.src = this.pictures[activePicture];
-  if (overlayGalleryPreview.lastChild === 'img') {
-    this.overlayGalleryPreview.replaceChild(picture, this.overlayGalleryPreview);
+  picture.src = this.pictures[currentPicture];
+  if (this.overlayGalleryPreview.lastChild.nodeName === 'IMG') {
+    this.overlayGalleryPreview.replaceChild(picture, this.overlayGalleryPreview.lastChild);
   } else {
     this.overlayGalleryPreview.appendChild(picture);
   }
+
+  this.previewNumberTotal.innerHTML = this.pictures.length;
+  this.previewNumberCurrent.innerHTML = this.activePicture + 1;
 };
 
 Gallery.prototype.onGalleryCloseClick = function() {

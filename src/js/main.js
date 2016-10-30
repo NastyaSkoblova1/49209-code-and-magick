@@ -9,17 +9,18 @@ var game = new Game(document.querySelector('.demo'));
 game.initializeLevelAndStart();
 game.setGameStatus(Game.Verdict.INTRO);
 
-var pictures = [];
-var galleryImages = document.querySelectorAll('.photogallery-image');
+var picturesItems = [];
+var galleryImages = document.querySelectorAll('.photogallery-image img');
+var galleryImagesArray = Array.prototype.slice.call(galleryImages);
 
 for (var i = 0; i < galleryImages.length; i++) {
-  pictures[i] = galleryImages[i].src;
+  picturesItems[i] = galleryImages[i].src;
 }
-var gallery = new Gallery(pictures);
+var gallery = new Gallery(picturesItems);
 
-galleryImages.forEach(function(picture, activePicture) {
+galleryImagesArray.forEach(function(picture, currentPicture) {
   picture.onclick = function() {
-    gallery.show(activePicture);
+    gallery.show(currentPicture);
   };
 });
 
