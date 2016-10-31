@@ -18,14 +18,17 @@ Gallery.prototype.show = function(currentPicture) {
     evt.preventDefault();
     self.onGalleryCloseClick();
   };
+
   this.overlayGalleryControlLeft.onclick = function(evt) {
     evt.preventDefault();
     self.onControlLeftClick();
   };
+
   this.overlayGalleryControlRight.onclick = function(evt) {
     evt.preventDefault();
     self.onControlRightClick();
   };
+
   this.overlayGallery.classList.remove('invisible');
   this.setActivePicture(currentPicture);
 };
@@ -49,23 +52,28 @@ Gallery.prototype.setActivePicture = function(currentPicture) {
 
   this.previewNumberTotal.innerHTML = this.pictures.length;
   this.previewNumberCurrent.innerHTML = this.activePicture + 1;
+
+  this.overlayGalleryControlLeft.classList.toggle('invisible', currentPicture === 0);
+  this.overlayGalleryControlRight.classList.toggle('invisible', currentPicture === this.pictures.length - 1);
 };
 
 Gallery.prototype.onGalleryCloseClick = function() {
   this.hide();
 };
 
-Gallery.prototype.onControlLeftClick = function(currentPicture) {
-  if (currentPicture > 0) {
-    currentPicture = currentPicture - 1;
-    this.setActivePicture(currentPicture);
+Gallery.prototype.onControlLeftClick = function() {
+  var self = this;
+  if (self.activePicture > 0) {
+    self.activePicture--;
+    self.setActivePicture(self.activePicture);
   }
 };
 
-Gallery.prototype.onControlRightClick = function(currentPicture) {
-  if (currentPicture < this.pictures.length - 1) {
-    currentPicture = currentPicture + 1;
-    this.setActivePicture(currentPicture);
+Gallery.prototype.onControlRightClick = function() {
+  var self = this;
+  if (self.activePicture < self.pictures.length - 1) {
+    self.activePicture++;
+    self.setActivePicture(self.activePicture);
   }
 };
 
