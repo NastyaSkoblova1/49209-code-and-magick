@@ -1,10 +1,8 @@
 'use strict';
 
-var activePicture = 0;
-
 var Gallery = function(picturesItems) {
   this.pictures = picturesItems;
-  this.activePicture = activePicture;
+  this.activePicture = 0;
   this.overlayGallery = document.querySelector('.overlay-gallery');
   this.overlayGalleryControlLeft = document.querySelector('.overlay-gallery-control-left');
   this.overlayGalleryControlRight = document.querySelector('.overlay-gallery-control-right');
@@ -57,17 +55,17 @@ Gallery.prototype.onGalleryCloseClick = function() {
   this.hide();
 };
 
-Gallery.prototype.onControlLeftClick = function() {
-  if (activePicture > 0) {
-    activePicture = activePicture - 1;
-    this.setActivePicture(activePicture);
+Gallery.prototype.onControlLeftClick = function(currentPicture) {
+  if (currentPicture > 0) {
+    currentPicture = currentPicture - 1;
+    this.setActivePicture(currentPicture);
   }
 };
 
-Gallery.prototype.onControlRightClick = function() {
-  if (activePicture < this.pictures.length - 1) {
-    activePicture = activePicture + 1;
-    this.setActivePicture(activePicture);
+Gallery.prototype.onControlRightClick = function(currentPicture) {
+  if (currentPicture < this.pictures.length - 1) {
+    currentPicture = currentPicture + 1;
+    this.setActivePicture(currentPicture);
   }
 };
 
