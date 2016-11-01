@@ -62,18 +62,16 @@ Gallery.prototype.onGalleryCloseClick = function() {
 };
 
 Gallery.prototype.onControlLeftClick = function() {
-  var self = this;
-  if (self.activePicture > 0) {
-    self.activePicture--;
-    self.setActivePicture(self.activePicture);
+  if (this.activePicture > 0) {
+    this.activePicture--;
+    this.setActivePicture(this.activePicture);
   }
 };
 
 Gallery.prototype.onControlRightClick = function() {
-  var self = this;
-  if (self.activePicture < self.pictures.length - 1) {
-    self.activePicture++;
-    self.setActivePicture(self.activePicture);
+  if (this.activePicture < this.pictures.length - 1) {
+    this.activePicture++;
+    this.setActivePicture(this.activePicture);
   }
 };
 
