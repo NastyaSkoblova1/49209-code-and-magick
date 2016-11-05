@@ -1,6 +1,12 @@
 'use strict';
 
-module.exports = function(reviewItem) {
+var Review = function(reviewItem, reviewElement) {
+  this.data = reviewItem;
+  this.element = reviewElement;
+  this.reviewQuizAnswer = document.querySelectorAll('.review-quiz-answer');
+};
+
+Review.prototype.addReview = function() {
   var template = document.querySelector('template');
   var templateContainer = 'content' in template ? template.content : template;
   var templateContainerReview = templateContainer.querySelector('.review');
@@ -23,14 +29,6 @@ module.exports = function(reviewItem) {
   };
 
   authorImage.src = reviewItem.author.picture;
-
-  return reviewElement;
-};
-
-var Review = function(reviewItem, reviewElement) {
-  this.data = reviewItem;
-  this.element = reviewElement;
-  this.reviewQuizAnswer = this.element.querySelectorAll('.review-quiz-answer');
 };
 
 Review.prototype.setActive = function() {

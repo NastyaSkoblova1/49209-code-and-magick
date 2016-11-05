@@ -1,7 +1,6 @@
 'use strict';
 
 var loadReview = require('./load.js');
-var getReviewElement = require('./review.js');
 var REVIEWS_LOAD_URL = 'http://localhost:1507/api/reviews';
 var reviewsFilter = document.querySelector('.reviews-filter');
 var Review = require('./review.js');
@@ -12,7 +11,8 @@ var showReviews = function(reviewsItems) {
   var reviewList = document.querySelector('.reviews-list');
   reviewsItems.forEach(function(review) {
     // reviewList.appendChild(getReviewElement(review));
-    reviewList.appendChild(new Review(getReviewElement(review)));
+    var reviewObject = new Review(review);
+    reviewList.appendChild(reviewObject.element);
   });
   reviewsFilter.classList.remove('invisible');
 };
