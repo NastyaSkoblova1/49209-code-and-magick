@@ -26,3 +26,25 @@ module.exports = function(reviewItem) {
 
   return reviewElement;
 };
+
+var Review = function(reviewItem, reviewElement) {
+  this.data = reviewItem;
+  this.element = reviewElement;
+  this.reviewQuizAnswer = this.element.querySelectorAll('.review-quiz-answer');
+};
+
+Review.prototype.setActive = function() {
+  for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
+    this.reviewQuizAnswer[i].onclick = function() {
+      this.reviewQuizAnswer[i].classList.add('review-quiz-answer-active');
+    };
+  }
+};
+
+Review.prototype.remove = function() {
+  for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
+    this.reviewQuizAnswer[i].onclick = null;
+  }
+};
+
+module.exports = Review;
