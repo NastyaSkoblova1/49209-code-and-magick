@@ -6,7 +6,7 @@ var Review = function(reviewItem, reviewElement) {
   this.reviewQuizAnswer = this.element.querySelectorAll('.review-quiz-answer');
 };
 
-Review.prototype.addReview = function() {
+Review.prototype.addReview = function(reviewItem) {
   var template = document.querySelector('template');
   var templateContainer = 'content' in template ? template.content : template;
   var templateContainerReview = templateContainer.querySelector('.review');

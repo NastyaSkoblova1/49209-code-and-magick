@@ -9,8 +9,7 @@ reviewsFilter.classList.add('invisible');
 
 var showReviews = function(reviewsItems) {
   var reviewList = document.querySelector('.reviews-list');
-  reviewsItems.forEach
-  (function(review) {
+  reviewsItems.forEach(function(review) {
     // reviewList.appendChild(getReviewElement(review));
     var reviewObject = new Review(review);
     reviewList.appendChild(reviewObject.element);
