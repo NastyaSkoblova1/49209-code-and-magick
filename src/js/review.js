@@ -3,7 +3,7 @@
 var Review = function(reviewItem, reviewElement) {
   this.data = reviewItem;
   this.element = reviewElement;
-  this.reviewQuizAnswer = document.querySelectorAll('.review-quiz-answer');
+  this.reviewQuizAnswer = this.element.querySelectorAll('.review-quiz-answer');
 };
 
 Review.prototype.addReview = function() {
