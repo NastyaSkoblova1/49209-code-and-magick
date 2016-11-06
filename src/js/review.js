@@ -8,15 +8,15 @@ var valueRatingClass = ['one', 'two', 'three', 'four', 'five'];
 
 var Review = function(reviewItem) {
   this.data = reviewItem;
-  this.element = reviewElement;
-  this.reviewAuthor = this.element.querySelector('.review-author');
-  this.reviewRating = this.element.querySelector('.review-rating');
-  this.reviewText = this.element.querySelector('.review-text');
+  this.reviewAuthor = reviewElement.querySelector('.review-author');
+  this.reviewRating = reviewElement.querySelector('.review-rating');
+  this.reviewText = reviewElement.querySelector('.review-text');
   this.reviewText.textContent = this.data.description;
   this.authorImage = new Image();
   this.addReview();
-  this.reviewQuizAnswer = this.element.querySelectorAll('.review-quiz-answer');
-  this.reviewRating.classList.add('review-rating-' + valueRatingClass[this.element.rating - 1]);
+  this.element = reviewElement;
+  this.reviewQuizAnswer = reviewElement.querySelectorAll('.review-quiz-answer');
+  this.reviewRating.classList.add('review-rating-' + valueRatingClass[reviewElement.rating - 1]);
 };
 
 Review.prototype.addReview = function() {
