@@ -39,8 +39,8 @@ Review.prototype.setActive = function() {
 
   for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
     this.reviewQuizAnswer[i].onclick = function() {
-      for (i = 0; i < self.reviewQuizAnswer.length; i++) {
-        self.reviewQuizAnswer[i].classList.remove('review-quiz-answer-active');
+      for (var j = 0; j < self.reviewQuizAnswer.length; j++) {
+        self.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
       }
       this.classList.add('review-quiz-answer-active');
     };
