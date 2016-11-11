@@ -40,6 +40,7 @@ Reviews.prototype.showReviews = function(reviewsItems) {
 
 Reviews.prototype.loadReview = function(filter, currentPageNumber) {
   var self = this;
+  this.activeFilter = filter;
   load(this.REVIEWS_LOAD_URL, {
     from: currentPageNumber * this.pageSize,
     to: currentPageNumber * this.pageSize + this.pageSize,

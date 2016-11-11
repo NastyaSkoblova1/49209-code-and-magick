@@ -40,4 +40,4 @@ form.onClose = function() {
   game.setDeactivated(false);
 };
 
-new Reviews();
+var reviews = new Reviews();
