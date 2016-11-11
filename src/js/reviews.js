@@ -39,11 +39,12 @@ Reviews.prototype.showReviews = function(reviewsItems) {
 };
 
 Reviews.prototype.loadReview = function(filter, currentPageNumber) {
-  load(this.REVIEWS_LOAD_URL, {
-    from: currentPageNumber * this.pageSize,
-    to: currentPageNumber * this.pageSize + this.pageSize,
-    filter: this.activeFilter
-  }, this.showReviews);
+  var self = this;
+  load(self.REVIEWS_LOAD_URL, {
+    from: currentPageNumber * self.pageSize,
+    to: currentPageNumber * self.pageSize + self.pageSize,
+    filter: self.activeFilter
+  }, self.showReviews());
   this.pageNumber++;
   this.showFilters();
   this.showControls();
