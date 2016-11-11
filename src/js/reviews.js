@@ -12,15 +12,16 @@ var Reviews = function() {
   this.pageNumber = 0;
   this.pageSize = 3;
 
-  this.showFilters();
+  this.hideFilters();
+  this.loadReview(this.activeFilter, this.pageNumber);
   this.attachEvents();
 };
 
-Reviews.prototype.showFilters = function() {
+Reviews.prototype.hideFilters = function() {
   this.reviewsFilter.classList.add('invisible');
 };
 
-Reviews.prototype.hideFilters = function() {
+Reviews.prototype.showFilters = function() {
   this.reviewsFilter.classList.remove('invisible');
 };
 
@@ -44,7 +45,7 @@ Reviews.prototype.loadReview = function(filter, currentPageNumber) {
     filter: this.activeFilter
   }, this.showReviews);
   this.pageNumber++;
-  this.hideFilters();
+  this.showFilters();
   this.showControls();
 };
 
@@ -68,3 +69,5 @@ Reviews.prototype.attachEvents = function() {
 };
 
 // changeFilter(activeFilter);
+
+module.exports = Reviews;
