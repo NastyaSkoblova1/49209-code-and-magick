@@ -44,7 +44,9 @@ Reviews.prototype.loadReview = function(filter, currentPageNumber) {
     from: currentPageNumber * this.pageSize,
     to: currentPageNumber * this.pageSize + this.pageSize,
     filter: this.activeFilter
-  }, self.showReviews());
+  }, function(data) {
+    self.showReviews(data);
+  });
   this.pageNumber++;
   this.showFilters();
   this.showControls();
@@ -59,16 +61,14 @@ Reviews.prototype.changeFilter = function(filter) {
 
 Reviews.prototype.attachEvents = function() {
   var self = this;
-  this.reviewsControlsMore.addEventListener('click', function() {
-    self.loadReview(this.activeFilter, this.pageNumber);
-  });
-
   this.reviewsFilter.addEventListener('change', function(evt) {
     var filterID = evt.target.id;
     self.changeFilter(filterID);
   }, true);
-};
 
-// changeFilter(activeFilter);
+  this.reviewsControlsMore.addEventListener('click', function() {
+    self.loadReview(self.activeFilter, self.pageNumber);
+  });
+};
 
 module.exports = Reviews;
