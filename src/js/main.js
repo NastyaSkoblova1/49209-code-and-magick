@@ -2,7 +2,7 @@
 
 var Game = require('./game.js');
 var form = require('./form.js');
-var reviews = require('./reviews.js');
+var Reviews = require('./reviews.js');
 var Gallery = require('./gallery.js');
 
 var game = new Game(document.querySelector('.demo'));
@@ -40,4 +40,4 @@ form.onClose = function() {
   game.setDeactivated(false);
 };
 
-reviews();
+new Reviews();

@@ -2,43 +2,69 @@
 
 var load = require('./load.js');
 var Review = require('./review.js');
-var REVIEWS_LOAD_URL = '/api/reviews';
-var reviewsFilter = document.querySelector('.reviews-filter');
-var reviewList = document.querySelector('.reviews-list');
-var reviewsControlsMore = document.querySelectorAll('reviews-controls-more');
-var activeFilter = 'reviews-all';
-var pageNumber = 0;
-var pageSize = 3;
-reviewsFilter.classList.add('invisible');
 
-var showReviews = function(reviewsItems) {
+var Reviews = function() {
+  this.REVIEWS_LOAD_URL = 'http://localhost:1507/api/reviews';
+  this.reviewsFilter = document.querySelector('.reviews-filter');
+  this.reviewList = document.querySelector('.reviews-list');
+  this.reviewsControlsMore = document.querySelector('.reviews-controls-more');
+  this.activeFilter = 'reviews-all';
+  this.pageNumber = 0;
+  this.pageSize = 3;
+
+  this.showFilters();
+  this.attachEvents();
+};
+
+Reviews.prototype.showFilters = function() {
+  this.reviewsFilter.classList.add('invisible');
+};
+
+Reviews.prototype.hideFilters = function() {
+  this.reviewsFilter.classList.remove('invisible');
+};
+
+Reviews.prototype.showControls = function() {
+  this.reviewsControlsMore.classList.remove('invisible');
+};
+
+Reviews.prototype.showReviews = function(reviewsItems) {
+  var self = this;
   reviewsItems.forEach(function(review) {
     // reviewList.appendChild(getReviewElement(review));
     var reviewObject = new Review(review);
-    reviewList.appendChild(reviewObject.element);
+    self.reviewList.appendChild(reviewObject.element);
   });
-  reviewsFilter.classList.remove('invisible');
 };
 
-var loadReview = function(filter, currentPageNumber) {
-  load(REVIEWS_LOAD_URL, {
-    from: currentPageNumber * pageSize,
-    to: currentPageNumber * pageSize + pageSize,
-    filter: filter
-  }, showReviews);
+Reviews.prototype.loadReview = function(filter, currentPageNumber) {
+  load(this.REVIEWS_LOAD_URL, {
+    from: currentPageNumber * this.pageSize,
+    to: currentPageNumber * this.pageSize + this.pageSize,
+    filter: this.activeFilter
+  }, this.showReviews);
+  this.pageNumber++;
+  this.hideFilters();
+  this.showControls();
 };
 
-var changeFilter = function(filterID) {
-  reviewList.innerHTML = '';
-  activeFilter = filterID;
-  pageNumber = 0;
-  loadReview(filterID, pageNumber);
+Reviews.prototype.changeFilter = function(filter) {
+  this.reviewList.innerHTML = '';
+  this.activeFilter = filter;
+  this.pageNumber = 0;
+  this.loadReview(filter, this.pageNumber);
 };
 
-reviewsFilter.addEventListener('change', function(evt) {
-  if (evt.target.classList.contains('reviews-filter-item')) {
-    changeFilter(evt.target.id);
-  }
-});
+Reviews.prototype.attachEvents = function() {
+  var self = this;
+  this.reviewsControlsMore.addEventListener('click', function() {
+    self.loadReview(this.activeFilter, this.pageNumber);
+  });
 
-module.exports = reviews;
+  this.reviewsFilter.addEventListener('change', function(evt) {
+    var filterID = evt.target.id;
+    self.changeFilter(filterID);
+  }, true);
+};
+
+// changeFilter(activeFilter);
