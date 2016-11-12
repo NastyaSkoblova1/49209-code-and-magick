@@ -722,6 +722,47 @@ Game.prototype = {
     }
   },
 
+  _onScroll: function() {
+    var clouds = document.querySelector('.header-clouds');
+    var demo = document.querySelector('.demo');
+    var THROTTLE = 100;
+    var demoCoordinate;
+    var scrollYCoordinate;
+    var cloudsCoordinate;
+    var self = this;
+
+    var setPositionCloud = function() {
+      scrollYCoordinate = window.pageYOffset;
+      clouds.style.backgroundPosition = scrollYCoordinate + '%';
+    };
+
+    var getPositionCloud = function() {
+      cloudsCoordinate = clouds.getBoundingClientRect().bottom;
+      if (cloudsCoordinate < 0) {
+        clouds.style.backgroundPosition = 0;
+      }
+    };
+
+    var setThrottle = function() {
+      var lastCall = Date.now();
+      if (Date.now() - lastCall >= THROTTLE) {
+        getPositionCloud();
+        lastCall = Date.now();
+      }
+    };
+
+    var setGamePause = function() {
+      demoCoordinate = demo.getBoundingClientRect().bottom;
+      if (demoCoordinate < 0) {
+        self.setGameStatus(Game.Verdict.PAUSE);
+      }
+    };
+
+    window.addEventListener('scroll', setPositionCloud);
+    window.addEventListener('scroll', setThrottle);
+    window.addEventListener('scroll', setGamePause);
+  },
+
   /**
    * @param {KeyboardEvent} evt [description]
    * @private
@@ -776,13 +817,17 @@ Game.prototype = {
   _initializeGameListeners: function() {
     window.addEventListener('keydown', this._onKeyDown);
     window.addEventListener('keyup', this._onKeyUp);
+    this._onScroll();
   },
 
   /** @private */
   _removeGameListeners: function() {
     window.removeEventListener('keydown', this._onKeyDown);
     window.removeEventListener('keyup', this._onKeyUp);
+    this._onScroll();
   }
+
+
 };
 
 Game.Verdict = Verdict;
