@@ -729,31 +729,21 @@ Game.prototype = {
     var demoCoordinate;
     var scrollYCoordinate;
     var cloudsCoordinate;
+    var lastCall = Date.now();
     var self = this;
 
     var setPositionCloud = function() {
       scrollYCoordinate = window.pageYOffset;
-      clouds.style.backgroundPosition = scrollYCoordinate + '%';
-    };
-
-    var getPositionCloud = function() {
       cloudsCoordinate = clouds.getBoundingClientRect().bottom;
-      if (cloudsCoordinate < 0) {
-        clouds.style.backgroundPosition = 0;
-      }
-    };
+      clouds.style.backgroundPosition = scrollYCoordinate + 'px';
 
-    var setThrottle = function() {
-      var lastCall = Date.now();
-
-      window.addEventListener('scroll', function() {
-        if (Date.now() - lastCall >= THROTTLE) {
-          getPositionCloud();
+      if (Date.now() - lastCall >= THROTTLE) {
+        if (cloudsCoordinate < 0) {
+          clouds.style.backgroundPosition = 0;
           lastCall = Date.now();
         }
-      });
+      }
     };
-
     var getGameCoordinate = function() {
       demoCoordinate = demo.getBoundingClientRect().bottom;
       if (demoCoordinate < 0) {
@@ -762,11 +752,9 @@ Game.prototype = {
     };
 
     window.addEventListener('scroll', function() {
-      getGameCoordinate();
       setPositionCloud();
+      getGameCoordinate();
     });
-
-    setThrottle();
   },
 
   /**
