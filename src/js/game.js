@@ -750,7 +750,6 @@ Game.prototype = {
 
     var optimizedScroll = throttle(function() {
       cloudsVisible = clouds.getBoundingClientRect().bottom > 0;
-      return cloudsVisible;
     }, THROTTLE);
 
     window.addEventListener('scroll', function() {
