@@ -728,22 +728,18 @@ Game.prototype = {
     var THROTTLE = 100;
     var demoCoordinate;
     var scrollYCoordinate;
-    var cloudsCoordinate;
-    var lastCall = Date.now();
     var self = this;
+    var cloudsVisible = true;
+    var lastCall = Date.now();
 
     var setPositionCloud = function() {
-      scrollYCoordinate = window.pageYOffset;
-      cloudsCoordinate = clouds.getBoundingClientRect().bottom;
-      clouds.style.backgroundPosition = scrollYCoordinate + 'px';
+      scrollYCoordinate = cloudsVisible ? window.pageYOffset + 'px' : 0;
 
-      if (Date.now() - lastCall >= THROTTLE) {
-        if (cloudsCoordinate < 0) {
-          clouds.style.backgroundPosition = 0;
-          lastCall = Date.now();
-        }
+      if (cloudsVisible) {
+        clouds.style.backgroundPosition = scrollYCoordinate;
       }
     };
+
     var getGameCoordinate = function() {
       demoCoordinate = demo.getBoundingClientRect().bottom;
       if (demoCoordinate < 0) {
@@ -752,8 +748,13 @@ Game.prototype = {
     };
 
     window.addEventListener('scroll', function() {
-      setPositionCloud();
+      if (Date.now() - lastCall >= THROTTLE) {
+        cloudsVisible = clouds.getBoundingClientRect().bottom > 0;
+        lastCall = Date.now();
+      }
+
       getGameCoordinate();
+      setPositionCloud();
     });
   },
 
