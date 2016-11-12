@@ -44,7 +44,7 @@ Reviews.prototype.loadReview = function(filter, currentPageNumber) {
   load(this.REVIEWS_LOAD_URL, {
     from: currentPageNumber * this.pageSize,
     to: currentPageNumber * this.pageSize + this.pageSize,
-    filter: this.activeFilter
+    filter: filter
   }, function(data) {
     self.showReviews(data);
   });

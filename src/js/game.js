@@ -722,6 +722,42 @@ Game.prototype = {
     }
   },
 
+  _onScroll: function() {
+    var clouds = document.querySelector('.header-clouds');
+    var demo = document.querySelector('.demo');
+    var THROTTLE = 100;
+    var demoCoordinate;
+    var scrollYCoordinate;
+    var self = this;
+    var cloudsVisible = true;
+    var lastCall = Date.now();
+
+    var setPositionCloud = function() {
+      scrollYCoordinate = cloudsVisible ? window.pageYOffset + 'px' : 0;
+
+      if (cloudsVisible) {
+        clouds.style.backgroundPosition = scrollYCoordinate;
+      }
+    };
+
+    var getGameCoordinate = function() {
+      demoCoordinate = demo.getBoundingClientRect().bottom;
+      if (demoCoordinate < 0) {
+        self.setGameStatus(Verdict.PAUSE);
+      }
+    };
+
+    window.addEventListener('scroll', function() {
+      if (Date.now() - lastCall >= THROTTLE) {
+        cloudsVisible = clouds.getBoundingClientRect().bottom > 0;
+        lastCall = Date.now();
+      }
+
+      getGameCoordinate();
+      setPositionCloud();
+    });
+  },
+
   /**
    * @param {KeyboardEvent} evt [description]
    * @private
@@ -776,6 +812,7 @@ Game.prototype = {
   _initializeGameListeners: function() {
     window.addEventListener('keydown', this._onKeyDown);
     window.addEventListener('keyup', this._onKeyUp);
+    this._onScroll();
   },
 
   /** @private */
@@ -783,6 +820,8 @@ Game.prototype = {
     window.removeEventListener('keydown', this._onKeyDown);
     window.removeEventListener('keyup', this._onKeyUp);
   }
+
+
 };
 
 Game.Verdict = Verdict;
