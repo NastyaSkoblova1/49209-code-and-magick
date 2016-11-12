@@ -745,10 +745,13 @@ Game.prototype = {
 
     var setThrottle = function() {
       var lastCall = Date.now();
-      if (Date.now() - lastCall >= THROTTLE) {
-        getPositionCloud();
-        lastCall = Date.now();
-      }
+
+      window.addEventListener('scroll', function() {
+        if (Date.now() - lastCall >= THROTTLE) {
+          getPositionCloud();
+          lastCall = Date.now();
+        }
+      });
     };
 
     var setGamePause = function() {
@@ -759,7 +762,7 @@ Game.prototype = {
     };
 
     window.addEventListener('scroll', setPositionCloud);
-    window.addEventListener('scroll', setThrottle);
+    setThrottle();
     window.addEventListener('scroll', setGamePause);
   },
 
