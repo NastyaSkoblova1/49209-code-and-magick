@@ -754,16 +754,19 @@ Game.prototype = {
       });
     };
 
-    var setGamePause = function() {
+    var getGameCoordinate = function() {
       demoCoordinate = demo.getBoundingClientRect().bottom;
       if (demoCoordinate < 0) {
-        self.setGameStatus(Game.Verdict.PAUSE);
+        self.setGameStatus(Verdict.PAUSE);
       }
     };
 
-    window.addEventListener('scroll', setPositionCloud);
+    window.addEventListener('scroll', function() {
+      getGameCoordinate();
+      setPositionCloud();
+    });
+
     setThrottle();
-    window.addEventListener('scroll', setGamePause);
   },
 
   /**
@@ -827,7 +830,6 @@ Game.prototype = {
   _removeGameListeners: function() {
     window.removeEventListener('keydown', this._onKeyDown);
     window.removeEventListener('keyup', this._onKeyUp);
-    this._onScroll();
   }
 
 
