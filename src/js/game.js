@@ -1,5 +1,7 @@
 'use strict';
 
+var throttle = require('./throttle');
+
 /**
  * @const
  * @type {number}
@@ -730,7 +732,6 @@ Game.prototype = {
     var scrollYCoordinate;
     var self = this;
     var cloudsVisible = true;
-    var lastCall = Date.now();
 
     var setPositionCloud = function() {
       scrollYCoordinate = cloudsVisible ? window.pageYOffset + 'px' : 0;
@@ -747,12 +748,12 @@ Game.prototype = {
       }
     };
 
-    window.addEventListener('scroll', function() {
-      if (Date.now() - lastCall >= THROTTLE) {
-        cloudsVisible = clouds.getBoundingClientRect().bottom > 0;
-        lastCall = Date.now();
-      }
+    var optimizedScroll = throttle(function() {
+      cloudsVisible = clouds.getBoundingClientRect().bottom > 0;
+    }, THROTTLE);
 
+    window.addEventListener('scroll', function() {
+      optimizedScroll();
       getGameCoordinate();
       setPositionCloud();
     });
