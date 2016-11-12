@@ -3,7 +3,7 @@
 module.exports = function(func, timeout) {
   var isThrottled = true;
 
-  function wrapper() {
+  return function() {
     if (isThrottled) {
       func();
       isThrottled = false;
@@ -11,7 +11,5 @@ module.exports = function(func, timeout) {
     setTimeout(function() {
       isThrottled = true;
     }, timeout);
-  }
-
-  return wrapper;
+  };
 };
