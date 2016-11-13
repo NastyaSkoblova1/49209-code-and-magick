@@ -31,11 +31,14 @@ Reviews.prototype.showControls = function() {
 
 Reviews.prototype.showReviews = function(reviewsItems) {
   var self = this;
+  var currentFilter = localStorage.getItem('currentFilter');
   reviewsItems.forEach(function(review) {
     // reviewList.appendChild(getReviewElement(review));
     var reviewObject = new Review(review);
     self.reviewList.appendChild(reviewObject.element);
   });
+
+  document.getElementById(currentFilter).checked = true;
 };
 
 Reviews.prototype.loadReview = function(filter, currentPageNumber) {
@@ -64,6 +67,7 @@ Reviews.prototype.attachEvents = function() {
   var self = this;
   this.reviewsFilter.addEventListener('change', function(evt) {
     var filterID = evt.target.id;
+    localStorage.setItem('currentFilter', filterID);
     self.changeFilter(filterID);
   }, true);
 
