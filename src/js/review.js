@@ -16,7 +16,6 @@ var Review = function(reviewItem) {
 
   this.onAuthorImageLoad = this.onAuthorImageLoad.bind(this);
   this.onAuthorImageError = this.onAuthorImageError.bind(this);
-  this.onReviewQuizAnswerClick = this.onReviewQuizAnswerClick.bind(this);
 
   this.addReview();
   this.setActive();
@@ -31,6 +30,8 @@ Review.prototype.addReview = function() {
 };
 
 Review.prototype.setActive = function() {
+  var self = this;
+
   // for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
   //   this.reviewQuizAnswer[i].onclick = function() {
   //     for (var j = 0; j < self.reviewQuizAnswer.length; j++) {
@@ -41,15 +42,13 @@ Review.prototype.setActive = function() {
   // }
 
   for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
-    this.reviewQuizAnswer[i].addEventListener('click', this.onReviewQuizAnswerClick);
+    this.reviewQuizAnswer[i].addEventListener('click', function() {
+      for (var j = 0; j < this.reviewQuizAnswer.length; j++) {
+        this.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
+      }
+      this.classList.add('review-quiz-answer-active');
+    }.bind(this));
   }
-};
-
-Review.prototype.onReviewQuizAnswerClick = function() {
-  for (var j = 0; j < this.reviewQuizAnswer.length; j++) {
-    this.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
-  }
-  this.classList.add('review-quiz-answer-active');
 };
 
 Review.prototype.remove = function() {
