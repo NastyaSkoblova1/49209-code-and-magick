@@ -31,23 +31,13 @@ Review.prototype.addReview = function() {
 
 Review.prototype.setActive = function() {
   var self = this;
-
-  // for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
-  //   this.reviewQuizAnswer[i].onclick = function() {
-  //     for (var j = 0; j < self.reviewQuizAnswer.length; j++) {
-  //       self.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
-  //     }
-  //     this.classList.add('review-quiz-answer-active');
-  //   };
-  // }
-
   for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
     this.reviewQuizAnswer[i].addEventListener('click', function() {
-      for (var j = 0; j < this.reviewQuizAnswer.length; j++) {
-        this.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
+      for (var j = 0; j < self.reviewQuizAnswer.length; j++) {
+        self.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
       }
       this.classList.add('review-quiz-answer-active');
-    }.bind(this));
+    });
   }
 };
 
