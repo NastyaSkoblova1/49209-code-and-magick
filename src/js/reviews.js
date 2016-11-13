@@ -12,6 +12,9 @@ var Reviews = function() {
   this.pageNumber = 0;
   this.pageSize = 3;
 
+  this.onChangeFilter = this.onChangeFilter.bind(this);
+  this.onControlsMoreClick = this.onControlsMoreClick.bind(this);
+
   this.hideFilters();
   this.loadReview(this.activeFilter, this.pageNumber);
   this.attachEvents();
@@ -30,13 +33,12 @@ Reviews.prototype.showControls = function() {
 };
 
 Reviews.prototype.showReviews = function(reviewsItems) {
-  var self = this;
   var currentFilter = localStorage.getItem('currentFilter');
   reviewsItems.forEach(function(review) {
     // reviewList.appendChild(getReviewElement(review));
     var reviewObject = new Review(review);
-    self.reviewList.appendChild(reviewObject.element);
-  });
+    this.reviewList.appendChild(reviewObject.element);
+  }.bind(this));
 
   if (currentFilter) {
     document.getElementById(currentFilter).checked = true;
@@ -44,15 +46,14 @@ Reviews.prototype.showReviews = function(reviewsItems) {
 };
 
 Reviews.prototype.loadReview = function(filter, currentPageNumber) {
-  var self = this;
   this.activeFilter = filter;
   load(this.REVIEWS_LOAD_URL, {
     from: currentPageNumber * this.pageSize,
     to: currentPageNumber * this.pageSize + this.pageSize,
     filter: filter
   }, function(data) {
-    self.showReviews(data);
-  });
+    this.showReviews(data);
+  }.bind(this));
   this.pageNumber++;
   this.showFilters();
   this.showControls();
@@ -66,16 +67,18 @@ Reviews.prototype.changeFilter = function(filter) {
 };
 
 Reviews.prototype.attachEvents = function() {
-  var self = this;
-  this.reviewsFilter.addEventListener('change', function(evt) {
-    var filterID = evt.target.id;
-    localStorage.setItem('currentFilter', filterID);
-    self.changeFilter(filterID);
-  }, true);
+  this.reviewsFilter.addEventListener('change', this.onChangeFilter, true);
+  this.reviewsControlsMore.addEventListener('click', this.onControlsMoreClick);
+};
 
-  this.reviewsControlsMore.addEventListener('click', function() {
-    self.loadReview(self.activeFilter, self.pageNumber);
-  });
+Reviews.prototype.onChangeFilter = function(evt) {
+  var filterID = evt.target.id;
+  localStorage.setItem('currentFilter', filterID);
+  this.changeFilter(filterID);
+};
+
+Reviews.prototype.onControlsMoreClick = function() {
+  this.loadReview(this.activeFilter, this.pageNumber);
 };
 
 module.exports = Reviews;

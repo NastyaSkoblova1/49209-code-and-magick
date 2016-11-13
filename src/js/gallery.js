@@ -10,24 +10,16 @@ var Gallery = function(picturesItems) {
   this.previewNumberTotal = document.querySelector('.preview-number-total');
   this.overlayGalleryClose = document.querySelector('.overlay-gallery-close');
   this.overlayGalleryPreview = document.querySelector('.overlay-gallery-preview');
+
+  this.hide = this.hide.bind(this);
+  this.onControlLeftClick = this.onControlLeftClick.bind(this);
+  this.onControlRightClick = this.onControlRightClick.bind(this);
 };
 
 Gallery.prototype.show = function(currentPicture) {
-  var self = this;
-  this.overlayGalleryClose.onclick = function(evt) {
-    evt.preventDefault();
-    self.onGalleryCloseClick();
-  };
-
-  this.overlayGalleryControlLeft.onclick = function(evt) {
-    evt.preventDefault();
-    self.onControlLeftClick();
-  };
-
-  this.overlayGalleryControlRight.onclick = function(evt) {
-    evt.preventDefault();
-    self.onControlRightClick();
-  };
+  this.overlayGalleryClose.addEventListener('click', this.hide);
+  this.overlayGalleryControlLeft.addEventListener('click', this.onControlLeftClick);
+  this.overlayGalleryControlRight.addEventListener('click', this.onControlRightClick);
 
   this.overlayGallery.classList.remove('invisible');
   this.setActivePicture(currentPicture);
