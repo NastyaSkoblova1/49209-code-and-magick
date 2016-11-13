@@ -38,7 +38,7 @@ Reviews.prototype.showReviews = function(reviewsItems) {
     self.reviewList.appendChild(reviewObject.element);
   });
 
-  if (currentFilter !== null) {
+  if (currentFilter) {
     document.getElementById(currentFilter).checked = true;
   }
 };
