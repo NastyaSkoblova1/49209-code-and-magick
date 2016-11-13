@@ -38,7 +38,9 @@ Reviews.prototype.showReviews = function(reviewsItems) {
     self.reviewList.appendChild(reviewObject.element);
   });
 
-  document.getElementById(currentFilter).checked = true;
+  if (currentFilter !== null) {
+    document.getElementById(currentFilter).checked = true;
+  }
 };
 
 Reviews.prototype.loadReview = function(filter, currentPageNumber) {
