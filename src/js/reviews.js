@@ -12,7 +12,6 @@ var Reviews = function() {
   this.reviewsFilter = document.querySelector('.reviews-filter');
   this.reviewList = document.querySelector('.reviews-list');
   this.reviewsControlsMore = document.querySelector('.reviews-controls-more');
-  // this.element = templateContainerReview.cloneNode(true);
   this.activeFilter = 'reviews-all';
   this.pageNumber = 0;
   this.pageSize = 3;
@@ -40,7 +39,6 @@ Reviews.prototype.showControls = function() {
 Reviews.prototype.showReviews = function(reviewsItems) {
   var currentFilter = localStorage.getItem('currentFilter');
   reviewsItems.forEach(function(review) {
-    // reviewList.appendChild(getReviewElement(review));
     var reviewObject = new Review(templateContainerReview.cloneNode(true), review);
     this.reviewList.appendChild(reviewObject.element);
   }.bind(this));

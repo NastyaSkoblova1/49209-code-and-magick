@@ -7,7 +7,6 @@ var Gallery = function(el, picturesItems) {
   BaseComponent.call(this, el);
   this.pictures = picturesItems;
   this.activePicture = 0;
-  // this.overlayGallery = document.querySelector('.overlay-gallery');
   this.overlayGalleryControlLeft = document.querySelector('.overlay-gallery-control-left');
   this.overlayGalleryControlRight = document.querySelector('.overlay-gallery-control-right');
   this.previewNumberCurrent = document.querySelector('.preview-number-current');
