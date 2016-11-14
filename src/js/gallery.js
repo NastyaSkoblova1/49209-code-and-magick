@@ -26,14 +26,11 @@ Gallery.prototype.show = function(currentPicture) {
   this.overlayGalleryClose.addEventListener('click', this.hide);
   this.overlayGalleryControlLeft.addEventListener('click', this.onControlLeftClick);
   this.overlayGalleryControlRight.addEventListener('click', this.onControlRightClick);
-
-  // this.overlayGallery.classList.remove('invisible');
   this.element.classList.remove('invisible');
   this.setActivePicture(currentPicture);
 };
 
 Gallery.prototype.hide = function() {
-  // this.overlayGallery.classList.add('invisible');
   this.element.classList.add('invisible');
   this.overlayGalleryClose.onclick = null;
   this.overlayGalleryControlLeft.onclick = null;
@@ -55,6 +52,8 @@ Gallery.prototype.setActivePicture = function(currentPicture) {
 
   this.overlayGalleryControlLeft.classList.toggle('invisible', currentPicture === 0);
   this.overlayGalleryControlRight.classList.toggle('invisible', currentPicture === this.pictures.length - 1);
+
+  utils.inherit(picture, BaseComponent);
 };
 
 Gallery.prototype.onGalleryCloseClick = function() {

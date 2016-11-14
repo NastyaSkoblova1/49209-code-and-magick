@@ -16,7 +16,9 @@ var galleryImagesArray = Array.prototype.slice.call(galleryImages);
 for (var i = 0; i < galleryImages.length; i++) {
   picturesItems[i] = galleryImages[i].src;
 }
-var gallery = new Gallery(picturesItems);
+
+var containerGallery = document.querySelector('.overlay-gallery');
+var gallery = new Gallery(containerGallery, picturesItems);
 
 galleryImagesArray.forEach(function(picture, currentPicture) {
   picture.onclick = function() {

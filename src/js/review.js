@@ -1,10 +1,10 @@
 'use strict';
 
-var Review = function(reviewItem) {
-  var template = document.querySelector('template');
-  var templateContainer = 'content' in template ? template.content : template;
-  var templateContainerReview = templateContainer.querySelector('.review');
-  this.element = templateContainerReview.cloneNode(true);
+var BaseComponent = require('./component.js');
+var utils = require('./utils');
+
+var Review = function(el, reviewItem) {
+  BaseComponent.call(this, el);
   this.valueRatingClass = ['one', 'two', 'three', 'four', 'five'];
   this.data = reviewItem;
   this.reviewAuthor = this.element.querySelector('.review-author');
@@ -20,6 +20,8 @@ var Review = function(reviewItem) {
   this.addReview();
   this.setActive();
 };
+
+utils.inherit(Review, BaseComponent);
 
 Review.prototype.addReview = function() {
   this.reviewRating.classList.add('review-rating-' + this.valueRatingClass[this.data.rating - 1]);

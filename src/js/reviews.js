@@ -3,11 +3,16 @@
 var load = require('./load.js');
 var Review = require('./review.js');
 
+var template = document.querySelector('template');
+var templateContainer = 'content' in template ? template.content : template;
+var templateContainerReview = templateContainer.querySelector('.review');
+
 var Reviews = function() {
   this.REVIEWS_LOAD_URL = 'http://localhost:1507/api/reviews';
   this.reviewsFilter = document.querySelector('.reviews-filter');
   this.reviewList = document.querySelector('.reviews-list');
   this.reviewsControlsMore = document.querySelector('.reviews-controls-more');
+  // this.element = templateContainerReview.cloneNode(true);
   this.activeFilter = 'reviews-all';
   this.pageNumber = 0;
   this.pageSize = 3;
@@ -36,7 +41,7 @@ Reviews.prototype.showReviews = function(reviewsItems) {
   var currentFilter = localStorage.getItem('currentFilter');
   reviewsItems.forEach(function(review) {
     // reviewList.appendChild(getReviewElement(review));
-    var reviewObject = new Review(review);
+    var reviewObject = new Review(templateContainerReview.cloneNode(true), review);
     this.reviewList.appendChild(reviewObject.element);
   }.bind(this));
 
