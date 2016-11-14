@@ -15,12 +15,11 @@ module.exports = {
     };
   },
 
-  inherit: function(ChildClass, BaseClass) {
-    return function() {
+  inherit: function(ChildClass, ParentClass) {
+    if (typeof ChildClass === 'function' && typeof BaseClass === 'function') {
       var EmptyConstructor = function() {};
-
-      EmptyConstructor.prototype = BaseClass.prototype;
+      EmptyConstructor.prototype = ParentClass.prototype;
       ChildClass.prototype = new EmptyConstructor();
-    };
+    }
   }
 };

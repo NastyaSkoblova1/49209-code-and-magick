@@ -3,7 +3,7 @@
 var BaseComponent = require('./component.js');
 var utils = require('./utils');
 
-var Gallery = function(picturesItems, el) {
+var Gallery = function(el, picturesItems) {
   BaseComponent.call(this, el);
   this.pictures = picturesItems;
   this.activePicture = 0;
@@ -34,7 +34,7 @@ Gallery.prototype.show = function(currentPicture) {
 
 Gallery.prototype.hide = function() {
   // this.overlayGallery.classList.add('invisible');
-  this.element.classList.remove('invisible');
+  this.element.classList.add('invisible');
   this.overlayGalleryClose.onclick = null;
   this.overlayGalleryControlLeft.onclick = null;
   this.overlayGalleryControlRight.onclick = null;
