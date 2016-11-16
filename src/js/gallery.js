@@ -1,9 +1,12 @@
 'use strict';
 
-var Gallery = function(picturesItems) {
+var BaseComponent = require('./component.js');
+var utils = require('./utils');
+
+var Gallery = function(el, picturesItems) {
+  BaseComponent.call(this, el);
   this.pictures = picturesItems;
   this.activePicture = 0;
-  this.overlayGallery = document.querySelector('.overlay-gallery');
   this.overlayGalleryControlLeft = document.querySelector('.overlay-gallery-control-left');
   this.overlayGalleryControlRight = document.querySelector('.overlay-gallery-control-right');
   this.previewNumberCurrent = document.querySelector('.preview-number-current');
@@ -16,17 +19,18 @@ var Gallery = function(picturesItems) {
   this.onControlRightClick = this.onControlRightClick.bind(this);
 };
 
+utils.inherit(Gallery, BaseComponent);
+
 Gallery.prototype.show = function(currentPicture) {
   this.overlayGalleryClose.addEventListener('click', this.hide);
   this.overlayGalleryControlLeft.addEventListener('click', this.onControlLeftClick);
   this.overlayGalleryControlRight.addEventListener('click', this.onControlRightClick);
-
-  this.overlayGallery.classList.remove('invisible');
+  this.element.classList.remove('invisible');
   this.setActivePicture(currentPicture);
 };
 
 Gallery.prototype.hide = function() {
-  this.overlayGallery.classList.add('invisible');
+  this.element.classList.add('invisible');
   this.overlayGalleryClose.onclick = null;
   this.overlayGalleryControlLeft.onclick = null;
   this.overlayGalleryControlRight.onclick = null;
