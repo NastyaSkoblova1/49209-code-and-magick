@@ -10,7 +10,7 @@ var Review = function(el, reviewItem) {
   this.reviewAuthor = this.element.querySelector('.review-author');
   this.reviewRating = this.element.querySelector('.review-rating');
   this.reviewText = this.element.querySelector('.review-text');
-  this.reviewText.textContent = this.data.description;
+  this.reviewText.textContent = this.data.getDescription();
   this.authorImage = new Image();
   this.reviewQuizAnswer = this.element.querySelectorAll('.review-quiz-answer');
 
@@ -24,11 +24,11 @@ var Review = function(el, reviewItem) {
 utils.inherit(Review, BaseComponent);
 
 Review.prototype.addReview = function() {
-  this.reviewRating.classList.add('review-rating-' + this.valueRatingClass[this.data.rating - 1]);
+  this.reviewRating.classList.add('review-rating-' + this.valueRatingClass[this.data.getRating() - 1]);
   this.authorImage.addEventListener('load', this.onAuthorImageLoad);
   this.authorImage.addEventListener('error', this.onAuthorImageError);
 
-  this.authorImage.src = this.data.author.picture;
+  this.authorImage.src = this.data.getAuthorPicture();
 };
 
 Review.prototype.setActive = function() {
@@ -56,8 +56,8 @@ Review.prototype.onAuthorImageError = function() {
 };
 
 Review.prototype.onAuthorImageLoad = function() {
-  this.reviewAuthor.alt = this.data.author.name;
-  this.reviewAuthor.src = this.data.author.picture;
+  this.reviewAuthor.alt = this.data.getAuthorName();
+  this.reviewAuthor.src = this.data.getAuthorPicture();
   this.reviewAuthor.width = 124;
   this.reviewAuthor.height = 124;
 };
