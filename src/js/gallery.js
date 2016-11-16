@@ -51,8 +51,6 @@ Gallery.prototype.setActivePicture = function(currentPicture) {
 
   this.overlayGalleryControlLeft.classList.toggle('invisible', currentPicture === 0);
   this.overlayGalleryControlRight.classList.toggle('invisible', currentPicture === this.pictures.length - 1);
-
-  utils.inherit(picture, BaseComponent);
 };
 
 Gallery.prototype.onGalleryCloseClick = function() {
