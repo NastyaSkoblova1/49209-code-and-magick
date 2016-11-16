@@ -2,7 +2,6 @@
 
 var load = require('./load.js');
 var Review = require('./review.js');
-var DataReview = require('./datareview.js');
 
 var template = document.querySelector('template');
 var templateContainer = 'content' in template ? template.content : template;
@@ -42,7 +41,7 @@ Reviews.prototype.showControls = function() {
 Reviews.prototype.showReviews = function(reviewsItems) {
   var currentFilter = localStorage.getItem('currentFilter');
   reviewsItems.forEach(function(review) {
-    var reviewObject = new Review(templateContainerReview.cloneNode(true), new DataReview(review));
+    var reviewObject = new Review(templateContainerReview.cloneNode(true), review);
     this.reviewsArr.push(reviewObject);
     this.reviewList.appendChild(reviewObject.element);
   }.bind(this));

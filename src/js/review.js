@@ -2,11 +2,12 @@
 
 var BaseComponent = require('./component.js');
 var utils = require('./utils');
+var DataReview = require('./datareview.js');
 
 var Review = function(el, reviewItem) {
   BaseComponent.call(this, el);
   this.valueRatingClass = ['one', 'two', 'three', 'four', 'five'];
-  this.data = reviewItem;
+  this.data = new DataReview(reviewItem);
   this.reviewAuthor = this.element.querySelector('.review-author');
   this.reviewRating = this.element.querySelector('.review-rating');
   this.reviewText = this.element.querySelector('.review-text');
