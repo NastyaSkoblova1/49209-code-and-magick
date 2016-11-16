@@ -66,12 +66,12 @@ Reviews.prototype.loadReview = function(filter, currentPageNumber) {
 };
 
 Reviews.prototype.changeFilter = function(filter) {
-  // this.reviewList.innerHTML = '';
   this.reviewsArr.forEach(function(item) {
     item.remove();
   });
   this.activeFilter = filter;
   this.pageNumber = 0;
+  this.reviewsArr = [];
   this.loadReview(filter, this.pageNumber);
 };
 

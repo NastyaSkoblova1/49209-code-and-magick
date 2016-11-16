@@ -47,6 +47,8 @@ Review.prototype.remove = function() {
   for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
     this.reviewQuizAnswer[i].onclick = null;
   }
+
+  BaseComponent.prototype.remove.call(this);
 };
 
 Review.prototype.onAuthorImageError = function() {
