@@ -55,31 +55,26 @@ Review.prototype.onAuthorImageLoad = function() {
 };
 
 Review.prototype.onQuizAnswerClick = function(evt) {
-  var currentUsefulness = this.data.getReviewUsefulness();
-  var recentUsefulness = currentUsefulness;
+  var eventTarget = evt.target;
+  var recentUsefulness = this.data.getReviewUsefulness();
 
-  if (!evt.target.classList.contains('review-quiz-answer')) {
+  if (!eventTarget.classList.contains('review-quiz-answer')) {
     return;
   }
-  if (!evt.target.classList.contains('review-quiz-answer-active')) {
-    if (evt.target.classList.contains('review-quiz-answer-yes')) {
-      recentUsefulness = ++currentUsefulness;
-    } else {
-      recentUsefulness = --currentUsefulness;
-    }
+  if (!eventTarget.classList.contains('review-quiz-answer-active')) {
+    recentUsefulness += eventTarget.classList.contains('review-quiz-answer-yes') ? 1 : -1;
     this.data.setReviewUsefulness(recentUsefulness, this.setQuizActive.bind(this, evt));
-  } else {
-    return;
   }
 
   console.log(recentUsefulness);
 };
 
 Review.prototype.setQuizActive = function(evt) {
+  var eventTarget = evt.target;
   for (var j = 0; j < this.reviewQuizAnswer.length; j++) {
     this.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
   }
-  evt.target.classList.add('review-quiz-answer-active');
+  eventTarget.classList.add('review-quiz-answer-active');
 };
 
 module.exports = Review;
