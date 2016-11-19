@@ -21,7 +21,6 @@ var Review = function(el, reviewItem) {
   this.onQuizAnswerClick = this.onQuizAnswerClick.bind(this);
 
   this.addReview();
-  // this.setActive();
 };
 
 utils.inherit(Review, BaseComponent);
@@ -63,14 +62,11 @@ Review.prototype.onQuizAnswerClick = function(evt) {
   }
   if (!eventTarget.classList.contains('review-quiz-answer-active')) {
     recentUsefulness += eventTarget.classList.contains('review-quiz-answer-yes') ? 1 : -1;
-    this.data.setReviewUsefulness(recentUsefulness, this.setQuizActive.bind(this, evt));
+    this.data.setReviewUsefulness(recentUsefulness, this.setQuizActive.bind(this, eventTarget));
   }
-
-  console.log(recentUsefulness);
 };
 
-Review.prototype.setQuizActive = function(evt) {
-  var eventTarget = evt.target;
+Review.prototype.setQuizActive = function(eventTarget) {
   for (var j = 0; j < this.reviewQuizAnswer.length; j++) {
     this.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
   }
