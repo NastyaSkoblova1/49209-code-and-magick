@@ -21,7 +21,7 @@ var Review = function(el, reviewItem) {
   this.onQuizAnswerClick = this.onQuizAnswerClick.bind(this);
 
   this.addReview();
-  this.setActive();
+  // this.setActive();
 };
 
 utils.inherit(Review, BaseComponent);
@@ -35,17 +35,17 @@ Review.prototype.addReview = function() {
   this.authorImage.src = this.data.getAuthorPicture();
 };
 
-Review.prototype.setActive = function() {
-  var self = this;
-  for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
-    this.reviewQuizAnswer[i].addEventListener('click', function() {
-      for (var j = 0; j < self.reviewQuizAnswer.length; j++) {
-        self.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
-      }
-      this.classList.add('review-quiz-answer-active');
-    });
-  }
-};
+// Review.prototype.setActive = function() {
+//   var self = this;
+//   for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
+//     this.reviewQuizAnswer[i].addEventListener('click', function() {
+//       for (var j = 0; j < self.reviewQuizAnswer.length; j++) {
+//         self.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
+//       }
+//       this.classList.add('review-quiz-answer-active');
+//     });
+//   }
+// };
 
 Review.prototype.remove = function() {
   for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
@@ -71,10 +71,19 @@ Review.prototype.onQuizAnswerClick = function(evt) {
   var recentUsefulness = currentUsefulness;
   if (evt.target.classList.contains('review-quiz-answer-yes')) {
     recentUsefulness = ++currentUsefulness;
+  } else {
+    recentUsefulness = --currentUsefulness;
   }
-  this.data.setReviewUsefulness(recentUsefulness, this.setActive.bind(this));
+  this.data.setReviewUsefulness(recentUsefulness, this.setQuizActive.bind(this, evt));
 
   console.log(recentUsefulness);
+};
+
+Review.prototype.setQuizActive = function(evt) {
+  for (var j = 0; j < this.reviewQuizAnswer.length; j++) {
+    this.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
+  }
+  evt.target.classList.add('review-quiz-answer-active');
 };
 
 module.exports = Review;
