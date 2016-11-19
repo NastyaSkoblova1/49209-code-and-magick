@@ -69,12 +69,20 @@ Review.prototype.onAuthorImageLoad = function() {
 Review.prototype.onQuizAnswerClick = function(evt) {
   var currentUsefulness = this.data.getReviewUsefulness();
   var recentUsefulness = currentUsefulness;
-  if (evt.target.classList.contains('review-quiz-answer-yes')) {
-    recentUsefulness = ++currentUsefulness;
+  if (evt.target.classList.contains('review-quiz-answer')) {
+    if (evt.target.classList.contains('review-quiz-answer-yes')) {
+      recentUsefulness = ++currentUsefulness;
+    } else {
+      recentUsefulness = --currentUsefulness;
+    }
+    this.data.setReviewUsefulness(recentUsefulness, this.setQuizActive.bind(this, evt));
   } else {
-    recentUsefulness = --currentUsefulness;
+    return;
   }
-  this.data.setReviewUsefulness(recentUsefulness, this.setQuizActive.bind(this, evt));
+
+  // if (evt.target.classList.contains('review-quiz-answer-active')) {
+  //   return false;
+  // }
 
   console.log(recentUsefulness);
 };
