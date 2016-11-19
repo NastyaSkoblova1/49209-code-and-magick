@@ -35,18 +35,6 @@ Review.prototype.addReview = function() {
   this.authorImage.src = this.data.getAuthorPicture();
 };
 
-// Review.prototype.setActive = function() {
-//   var self = this;
-//   for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
-//     this.reviewQuizAnswer[i].addEventListener('click', function() {
-//       for (var j = 0; j < self.reviewQuizAnswer.length; j++) {
-//         self.reviewQuizAnswer[j].classList.remove('review-quiz-answer-active');
-//       }
-//       this.classList.add('review-quiz-answer-active');
-//     });
-//   }
-// };
-
 Review.prototype.remove = function() {
   for (var i = 0; i < this.reviewQuizAnswer.length; i++) {
     this.reviewQuizAnswer[i].onclick = null;
@@ -70,10 +58,10 @@ Review.prototype.onQuizAnswerClick = function(evt) {
   var currentUsefulness = this.data.getReviewUsefulness();
   var recentUsefulness = currentUsefulness;
 
-  if (evt.target.classList.contains('review-quiz-answer-active')) {
-    return false;
+  if (!evt.target.classList.contains('review-quiz-answer')) {
+    return;
   }
-  if (evt.target.classList.contains('review-quiz-answer')) {
+  if (!evt.target.classList.contains('review-quiz-answer-active')) {
     if (evt.target.classList.contains('review-quiz-answer-yes')) {
       recentUsefulness = ++currentUsefulness;
     } else {
@@ -81,8 +69,10 @@ Review.prototype.onQuizAnswerClick = function(evt) {
     }
     this.data.setReviewUsefulness(recentUsefulness, this.setQuizActive.bind(this, evt));
   } else {
-    return false;
+    return;
   }
+
+  console.log(recentUsefulness);
 };
 
 Review.prototype.setQuizActive = function(evt) {
