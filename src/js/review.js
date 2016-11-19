@@ -13,10 +13,12 @@ var Review = function(el, reviewItem) {
   this.reviewText = this.element.querySelector('.review-text');
   this.reviewText.textContent = this.data.getDescription();
   this.authorImage = new Image();
+  this.reviewQuiz = this.element.querySelector('.review-quiz');
   this.reviewQuizAnswer = this.element.querySelectorAll('.review-quiz-answer');
 
   this.onAuthorImageLoad = this.onAuthorImageLoad.bind(this);
   this.onAuthorImageError = this.onAuthorImageError.bind(this);
+  this.onQuizAnswerClick = this.onQuizAnswerClick.bind(this);
 
   this.addReview();
   this.setActive();
@@ -28,6 +30,7 @@ Review.prototype.addReview = function() {
   this.reviewRating.classList.add('review-rating-' + this.valueRatingClass[this.data.getRating() - 1]);
   this.authorImage.addEventListener('load', this.onAuthorImageLoad);
   this.authorImage.addEventListener('error', this.onAuthorImageError);
+  this.reviewQuiz.addEventListener('click', this.onQuizAnswerClick);
 
   this.authorImage.src = this.data.getAuthorPicture();
 };
@@ -61,6 +64,17 @@ Review.prototype.onAuthorImageLoad = function() {
   this.reviewAuthor.src = this.data.getAuthorPicture();
   this.reviewAuthor.width = 124;
   this.reviewAuthor.height = 124;
+};
+
+Review.prototype.onQuizAnswerClick = function(evt) {
+  var currentUsefulness = this.data.getReviewUsefulness();
+  var recentUsefulness = currentUsefulness;
+  if (evt.target.classList.contains('review-quiz-answer-yes')) {
+    recentUsefulness = ++currentUsefulness;
+  }
+  this.data.setReviewUsefulness(recentUsefulness, this.setActive.bind(this));
+
+  console.log(recentUsefulness);
 };
 
 module.exports = Review;

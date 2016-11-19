@@ -21,11 +21,14 @@ DataReview.prototype.setAuthorPicture = function(authorPicture) {
 };
 
 DataReview.prototype.getReviewUsefulness = function() {
-  return this.data.description;
+  return this.data.review_usefulness;
 };
 
-DataReview.prototype.setReviewUsefulness = function(reviewUsefulness) {
+DataReview.prototype.setReviewUsefulness = function(reviewUsefulness, callback) {
   this.data.review_usefulness = reviewUsefulness;
+  if (typeof callback === 'function') {
+    callback();
+  }
 };
 
 DataReview.prototype.getRating = function() {
