@@ -18,7 +18,7 @@ var galleryImagesArray = Array.prototype.slice.call(galleryImages);
 // }
 
 var picturesItems = galleryImagesArray.map(function(picture) {
-  return picture.attributes.src.nodeValue;
+  return '#photo/' + picture.attributes.src.nodeValue;
 });
 
 var containerGallery = document.querySelector('.overlay-gallery');
