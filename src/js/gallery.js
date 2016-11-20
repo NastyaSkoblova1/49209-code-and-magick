@@ -63,14 +63,14 @@ Gallery.prototype.onGalleryCloseClick = function() {
 
 Gallery.prototype.onControlLeftClick = function() {
   if (this.activePicture > 0) {
-    location.hash = '#photo' + this.pictures[this.activePicture - 1];
+    location.hash = this.pictures[this.activePicture - 1];
     this.setActivePicture(location.hash);
   }
 };
 
 Gallery.prototype.onControlRightClick = function() {
   if (this.activePicture < this.pictures.length - 1) {
-    location.hash = '#photo' + this.pictures[this.activePicture + 1];
+    location.hash = this.pictures[this.activePicture + 1];
     this.setActivePicture(location.hash);
   }
 };
