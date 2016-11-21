@@ -63,23 +63,21 @@ Gallery.prototype.onGalleryCloseClick = function() {
 
 Gallery.prototype.onControlLeftClick = function() {
   if (this.activePicture > 0) {
-    location.hash = this.pictures[this.activePicture - 1];
-    this.setActivePicture(location.hash);
+    location.hash = '#photo/' + this.pictures[this.activePicture - 1];
   }
 };
 
 Gallery.prototype.onControlRightClick = function() {
   if (this.activePicture < this.pictures.length - 1) {
-    location.hash = this.pictures[this.activePicture + 1];
-    this.setActivePicture(location.hash);
+    location.hash = '#photo/' + this.pictures[this.activePicture + 1];
   }
 };
 
 Gallery.prototype.onHashChange = function() {
   var regExp = /#photo\/(\S+)/;
-  var locationHash = location.hash.match(regExp);
+  var locationHash = location.hash.match(regExp) ? location.hash.slice(7) : null;
   if (locationHash) {
-    this.show(location.hash);
+    this.show(locationHash);
   } else {
     this.hide();
   }

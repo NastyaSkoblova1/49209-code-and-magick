@@ -9,16 +9,11 @@ var game = new Game(document.querySelector('.demo'));
 game.initializeLevelAndStart();
 game.setGameStatus(Game.Verdict.INTRO);
 
-// var picturesItems = [];
 var galleryImages = document.querySelectorAll('.photogallery-image img');
 var galleryImagesArray = Array.prototype.slice.call(galleryImages);
 
-// for (var i = 0; i < galleryImages.length; i++) {
-//   picturesItems[i] = galleryImages[i].src;
-// }
-
 var picturesItems = galleryImagesArray.map(function(picture) {
-  return '#photo/' + picture.attributes.src.nodeValue;
+  return picture.attributes.src.nodeValue;
 });
 
 var containerGallery = document.querySelector('.overlay-gallery');
@@ -27,7 +22,6 @@ var gallery = new Gallery(containerGallery, picturesItems);
 galleryImagesArray.forEach(function(picture) {
   picture.onclick = function() {
     location.hash = '#photo/' + picture.attributes.src.nodeValue;
-    gallery.show(location.hash);
   };
 });
 
