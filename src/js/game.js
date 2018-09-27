@@ -407,19 +407,39 @@ window.Game = (function() {
     /**
      * Отрисовка экрана паузы.
      */
+
+
+    _drawContent: function(message) {
+      var textCoordinateX = 220;
+      var textCoordinateY = 30;
+      var ctx = this.ctx;
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillRect(200, 0, 300, 150);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(210, 10, 300, 150);
+      ctx.font = '16px PT Mono';
+      ctx.fillStyle = '#000000';
+
+      message.forEach(function(item, i) {
+        textCoordinateY += 30;
+        ctx.fillText(item, textCoordinateX, textCoordinateY);
+      });
+    },
+
     _drawPauseScreen: function() {
+
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          this._drawContent(['Вы выиграли!', 'Вы просто лучший!']);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          this._drawContent(['Вы проиграли.', 'Набирайтесь сил и приходите снова.']);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          this._drawContent(['Игра на паузе!', 'До скорой встречи!']);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          this._drawContent(['Добро пожаловать в игру!', 'Нажмите Space, чтобы начать.', 'Удачной битвы!']);
           break;
       }
     },
