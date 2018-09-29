@@ -408,16 +408,15 @@ window.Game = (function() {
      * Отрисовка экрана паузы.
      */
 
-    _drawText: function(message, width,textCoordinateX, textCoordinateY) {
+    _drawText: function(message, width) {
       var words = message.split(' ');
       var wordsAmount = words.length;
-      var ctx = this.ctx;
       var line = '';
       var linesArray = [];
 
       for (var i = 0; i < wordsAmount; i++) {
         var newLine = line + words[i] + ' ';
-        var lineWidth = ctx.measureText(newLine).width;
+        var lineWidth = this.ctx.measureText(newLine).width;
       
         if (lineWidth > width) {
           linesArray.push(line);
@@ -429,10 +428,7 @@ window.Game = (function() {
 
       linesArray.push(line);
 
-      for (var i = 0; i < linesArray.length; i++) {
-        ctx.fillText(linesArray[i], textCoordinateX, textCoordinateY);
-        textCoordinateY += 30;
-      }
+      return linesArray;
     },
 
     _drawContent: function(message, width) {
@@ -446,7 +442,11 @@ window.Game = (function() {
       ctx.font = '16px PT Mono';
       ctx.fillStyle = '#000000';
 
-      this._drawText(message, width,textCoordinateX, textCoordinateY);
+      var lineToDraw = this._drawText(message, width);
+      lineToDraw.forEach(function(item, i) {
+        ctx.fillText(item, textCoordinateX, textCoordinateY);
+        textCoordinateY += 30;
+      });
     },
 
     _drawPauseScreen: function() {
