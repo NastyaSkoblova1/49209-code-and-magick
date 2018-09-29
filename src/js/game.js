@@ -408,38 +408,61 @@ window.Game = (function() {
      * Отрисовка экрана паузы.
      */
 
+    _drawText: function(message, width,textCoordinateX, textCoordinateY) {
+      var words = message.split(' ');
+      var wordsAmount = words.length;
+      var ctx = this.ctx;
+      var line = '';
+      var linesArray = [];
 
-    _drawContent: function(message) {
+      for (var i = 0; i < wordsAmount; i++) {
+        var newLine = line + words[i] + ' ';
+        var lineWidth = ctx.measureText(newLine).width;
+      
+        if (lineWidth > width) {
+          linesArray.push(line);
+          line = words[i] + ' ';
+        } else {
+          line = newLine;
+        }
+      }
+
+      linesArray.push(line);
+
+      for (var i = 0; i < linesArray.length; i++) {
+        ctx.fillText(linesArray[i], textCoordinateX, textCoordinateY);
+        textCoordinateY += 30;
+      }
+    },
+
+    _drawContent: function(message, width) {
       var textCoordinateX = 220;
       var textCoordinateY = 30;
       var ctx = this.ctx;
       ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      ctx.fillRect(200, 0, 300, 150);
+      ctx.fillRect(200, 0, width, 150);
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(210, 10, 300, 150);
+      ctx.fillRect(210, 10, width, 150);
       ctx.font = '16px PT Mono';
       ctx.fillStyle = '#000000';
 
-      message.forEach(function(item, i) {
-        textCoordinateY += 30;
-        ctx.fillText(item, textCoordinateX, textCoordinateY);
-      });
+      this._drawText(message, width,textCoordinateX, textCoordinateY);
     },
 
     _drawPauseScreen: function() {
 
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          this._drawContent(['Вы выиграли!', 'Вы просто лучший!']);
+          this._drawContent('Вы выиграли! Вы просто лучший!', 300);
           break;
         case Verdict.FAIL:
-          this._drawContent(['Вы проиграли.', 'Набирайтесь сил и приходите снова.']);
+          this._drawContent('Вы проиграли. Набирайтесь сил и приходите снова.', 300);
           break;
         case Verdict.PAUSE:
-          this._drawContent(['Игра на паузе!', 'До скорой встречи!']);
+          this._drawContent('Игра на паузе! До скорой встречи!', 300);
           break;
         case Verdict.INTRO:
-          this._drawContent(['Добро пожаловать в игру!', 'Нажмите Space, чтобы начать.', 'Удачной битвы!']);
+          this._drawContent('Добро пожаловать в игру! Нажмите Space, чтобы начать. Удачной битвы!', 300);
           break;
       }
     },
